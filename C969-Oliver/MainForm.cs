@@ -12,6 +12,7 @@ namespace C969_Oliver
 {
     public partial class MainForm : Form
     {
+        public LogIn LogInForm;
         public MainForm()
         {
             InitializeComponent();
@@ -40,6 +41,30 @@ namespace C969_Oliver
         {
             ModifyCustomer modifyCustomer = new ModifyCustomer();
             modifyCustomer.Show();
+        }
+
+        private void btnViewAppts_Click(object sender, EventArgs e)
+        {
+            AppointmentsReport appointmentReport = new AppointmentsReport();
+            appointmentReport.Show();
+        }
+
+        private void btnConsultantReport_Click(object sender, EventArgs e)
+        {
+            ConsultantReport consultantReport = new ConsultantReport();
+            consultantReport.Show();
+        }
+
+        private void btnApptType_Click(object sender, EventArgs e)
+        {
+            AppointmentType appointmentType = new AppointmentType();
+            appointmentType.Show();
+        }
+
+        private void btnCustomerReport_Click(object sender, EventArgs e)
+        {
+            CustomerReport customerReport = new CustomerReport();
+            customerReport.Show();
         }
     }
 }

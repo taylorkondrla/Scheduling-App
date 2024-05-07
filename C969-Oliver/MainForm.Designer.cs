@@ -188,6 +188,7 @@
             this.btnViewAppts.TabIndex = 12;
             this.btnViewAppts.Text = "Appointments Calendar";
             this.btnViewAppts.UseVisualStyleBackColor = false;
+            this.btnViewAppts.Click += new System.EventHandler(this.btnViewAppts_Click);
             // 
             // btnConsultantReport
             // 
@@ -199,6 +200,7 @@
             this.btnConsultantReport.TabIndex = 13;
             this.btnConsultantReport.Text = "Consultant Report";
             this.btnConsultantReport.UseVisualStyleBackColor = false;
+            this.btnConsultantReport.Click += new System.EventHandler(this.btnConsultantReport_Click);
             // 
             // btnApptType
             // 
@@ -210,6 +212,7 @@
             this.btnApptType.TabIndex = 14;
             this.btnApptType.Text = "Appointment Type";
             this.btnApptType.UseVisualStyleBackColor = false;
+            this.btnApptType.Click += new System.EventHandler(this.btnApptType_Click);
             // 
             // btnCustomerReport
             // 
@@ -221,6 +224,7 @@
             this.btnCustomerReport.TabIndex = 15;
             this.btnCustomerReport.Text = "Customers Report";
             this.btnCustomerReport.UseVisualStyleBackColor = false;
+            this.btnCustomerReport.Click += new System.EventHandler(this.btnCustomerReport_Click);
             // 
             // btnLogOut
             // 

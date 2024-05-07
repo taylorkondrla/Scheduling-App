@@ -185,6 +185,7 @@
             this.btnSaveAddAppt.TabIndex = 12;
             this.btnSaveAddAppt.Text = "Save";
             this.btnSaveAddAppt.UseVisualStyleBackColor = false;
+            this.btnSaveAddAppt.Click += new System.EventHandler(this.btnSaveAddAppt_Click);
             // 
             // btnCloseAddAppt
             // 
@@ -196,6 +197,7 @@
             this.btnCloseAddAppt.TabIndex = 13;
             this.btnCloseAddAppt.Text = "Close";
             this.btnCloseAddAppt.UseVisualStyleBackColor = false;
+            this.btnCloseAddAppt.Click += new System.EventHandler(this.btnCloseAddAppt_Click);
             // 
             // textApptIDAddAppt
             // 
