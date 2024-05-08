@@ -16,6 +16,8 @@ namespace C969_Oliver
         public MainForm()
         {
             InitializeComponent();
+            //Populate appointment data
+            RefreshAppointmentData();
         }
 
         //add appointment

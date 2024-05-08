@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,12 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace C969_Oliver
 {
     public partial class LogIn : Form
     {
-        private static User currentUser;
+        private static DataManager dataManager = new DataManager(); // Create an instance of DataManager
+        public static User currentUser;
         public string message = "The username and password did not match.";
         public LogIn()
         {
@@ -29,7 +32,7 @@ namespace C969_Oliver
                 message = "Nombre de usuario y contraseña no coinciden.";
             }
         }
-        public static User GetCurrentUSer()
+        public static User GetCurrentUser()
         { 
             return currentUser;
         }
@@ -48,8 +51,8 @@ namespace C969_Oliver
                         {
                             reader.Read();
                             int userID = reader.GetInt32(0);
-                            DataManager.setCurrentUserID(userID);
-                            DataManager.setCurrentUsername(userName);
+                            User.GetUserByID(userID);
+                            User.GetUserByName(userName);
                             return 1;
                         }
                     }

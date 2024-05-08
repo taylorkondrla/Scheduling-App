@@ -19,7 +19,7 @@ namespace C969_Oliver
             InitializeComponent();
 
             //appointment id text box new appointment id
-            textApptIDAddAppt.Text = Appointments.NewAppointmentID.ToString();
+            textApptIDAddAppt.Text = Appointments.NewAppointmentID().ToString();
 
             //add customer names
             // Populate text boxes with customer names
@@ -33,7 +33,7 @@ namespace C969_Oliver
 
             //add user names
             // Populate text boxes with user names
-            List<User> users = User.GetListUsers();
+            List<User> users = User.GetUserList();
             StringBuilder userNames = new StringBuilder();
             foreach (User user in users)
             {

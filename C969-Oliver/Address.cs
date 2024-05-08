@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -54,14 +55,14 @@ namespace C969_Oliver
                 $"and zipCode = '{zipCode}' " +
                 $"and phone = '{phone}' ";
 
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
             {
                 if (reader.HasRows)
                 {
-                    getAddress.addressId = Convert.ToInt32(reader["addressId"]);
+                    getAddress.addressID = Convert.ToInt32(reader["addressId"]);
                     getAddress.address = reader["address"].ToString();
                     getAddress.cityId = Convert.ToInt32(reader["cityId"]);
                     getAddress.zipCode = reader["zipCode"].ToString();
@@ -84,7 +85,7 @@ namespace C969_Oliver
             Address newAddress = new Address(NewAddressId(), address, cityId, zipCode, phone);
             string query = "INSERT INTO address " +
                 $"VALUES ('{newAddress.addressID}', '{newAddress.address}', '{newAddress.cityId}', '{newAddress.zipCode}', '{newAddress.phone}', '{DateTime.Now.ToUniversalTime().ToString("yyy-MM-dd HH:mm:ss")}', '{currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyy-MM-dd HH:mm:ss")}', '{currentUser.userName}')";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
             cmd.ExecuteNonQuery();
             return newAddress;
         }

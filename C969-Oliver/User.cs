@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace C969_Oliver
             User currentUser = new User();
 
             string qry = $"SELECT * FROM user WHERE userName = '{userName}' and password = '{password}'";
-            MySqlCommand cmd = newMySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read()) 
@@ -91,7 +92,7 @@ namespace C969_Oliver
         { 
             User user = new User();
             string query = $"SELECT userID, userName FROM user WHERE userName = '{userName}'";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.conn);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())

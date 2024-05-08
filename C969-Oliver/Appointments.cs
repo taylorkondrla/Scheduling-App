@@ -49,14 +49,15 @@ namespace C969_Oliver
             this.end = end;
         }
 
-        //Methods to fill Appointment DataTable
+        //Methods for Appointment DataTable
 
         public static DataTable GetAllAppointments()
         {
+            string connectionString = DBConnection.connection.ConnectionString; // Get the connection string
             string qry = "SELECT appointmentId, userId, customerId, title, description, location, type, contact, start, end " +
-            "FROM appointment";
+                         "FROM appointment";
 
-            using (MySqlConnection connection = new MySqlConnection(DBConnection.connString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -100,7 +101,7 @@ namespace C969_Oliver
         public static void CreateAppointment(Appointments appointments)
         {
             string qry = $"INSERT INTO appointment " +
-                $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointmenst.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
+                $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointments.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
 
             MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
             cmd.ExecuteNonQuery();

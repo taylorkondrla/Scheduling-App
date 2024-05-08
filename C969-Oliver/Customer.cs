@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -35,7 +36,7 @@ namespace C969_Oliver
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                newID = Convert.ToInt32(rdr[0]);
+                newID = Convert.ToInt32(reader[0]);
                 newID += 1;
             }
             reader.Close();
@@ -47,7 +48,7 @@ namespace C969_Oliver
         {
             int newCustomerId = GetNewCustomerID();
             string timestamp = DataManager.createTimeStamp();
-            string uname = DataManager.getCurrentUserName();
+            string uname = User.GetUserByName(customerName).userName; // Pass customerName to GetUserByName()
 
             string qry = $"INSERT INTO customer " +
                          $"VALUES ('{newCustomerId}', '{customerName}', '{addressId}', '{active}', '{timestamp}', '{uname}', '{timestamp}', '{uname}')";
@@ -88,7 +89,7 @@ namespace C969_Oliver
 
             while (reader.Read())
             {
-                if (rdr.HasRows)
+                if (reader.HasRows)
                 {
                     customer.customerId = Convert.ToInt32(reader["customerId"]);
                     customer.customerName = reader["customerName"].ToString();
@@ -145,12 +146,16 @@ namespace C969_Oliver
         public static void UpdateCustomer(int customerId, string customerName, int addressId, int active)
         {
             string timestamp = DataManager.createTimeStamp();
+
+            // Fetch the lastUpdateBy value from the database
+            string uname = User.GetUserByName(customerName).userName;
+
             string qry = $"UPDATE customer " +
                          $"SET customerName = '{customerName}', " +
                          $"addressId = '{addressId}', " +
                          $"active = '{active}', " +
                          $"lastUpdate = '{timestamp}', " +
-                         $"lastUpdateBy = '{DataManager.getCurrentUserName()}' " +
+                         $"lastUpdateBy = '{uname}' " + //uname is declared and assigned
                          $"WHERE customerId = '{customerId}'";
 
             MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
