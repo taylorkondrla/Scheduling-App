@@ -272,6 +272,7 @@
             this.btnSaveModAppt.TabIndex = 23;
             this.btnSaveModAppt.Text = "Save";
             this.btnSaveModAppt.UseVisualStyleBackColor = false;
+            this.btnSaveModAppt.Click += new System.EventHandler(this.btnSaveModAppt_Click);
             // 
             // btnCloseModAppt
             // 
@@ -282,6 +283,7 @@
             this.btnCloseModAppt.TabIndex = 24;
             this.btnCloseModAppt.Text = "Close";
             this.btnCloseModAppt.UseVisualStyleBackColor = false;
+            this.btnCloseModAppt.Click += new System.EventHandler(this.btnCloseModAppt_Click);
             // 
             // ModifyAppointment
             // 

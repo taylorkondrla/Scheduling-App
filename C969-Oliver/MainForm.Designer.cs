@@ -113,6 +113,7 @@
             this.btnDeleteAppt.TabIndex = 5;
             this.btnDeleteAppt.Text = "Delete";
             this.btnDeleteAppt.UseVisualStyleBackColor = false;
+            this.btnDeleteAppt.Click += new System.EventHandler(this.btnDeleteAppt_Click);
             // 
             // mainCustomersLabel
             // 
@@ -177,6 +178,7 @@
             this.btnDeleteCustomer.TabIndex = 11;
             this.btnDeleteCustomer.Text = "Delete";
             this.btnDeleteCustomer.UseVisualStyleBackColor = false;
+            this.btnDeleteCustomer.Click += new System.EventHandler(this.btnDeleteCustomer_Click);
             // 
             // btnViewAppts
             // 
@@ -236,6 +238,7 @@
             this.btnLogOut.TabIndex = 16;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.UseVisualStyleBackColor = false;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // MainForm
             // 

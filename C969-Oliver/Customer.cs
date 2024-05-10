@@ -16,18 +16,30 @@ namespace C969_Oliver
         // Attributes
         public int customerId { get; set; }
         public string customerName { get; set; }
+
+        public string address { get; set; }
+
+        public string address2 { get; set; }
+
+        public string city { get; set; }
+
+        public string country { get; set; }
+
+        public string zipCode { get; set; }
+
+        public string phone { get; set; }
         public int addressId { get; set; }
         public int active { get; set; }
 
-        // DataTable to hold customer info
-        private static DataTable customers = new DataTable();
+        // Data table holding customer info
+        public static DataTable customers = new DataTable();
 
         // Constructor
         public Customer() { }
 
         // Methods
 
-        // Retrieve a new unique customer ID
+        //get a new customer ID
         public static int GetNewCustomerID()
         {
             int newID = 0;
@@ -142,8 +154,8 @@ namespace C969_Oliver
             return customerExists;
         }
 
-        //Update  customer
-        public static void UpdateCustomer(int customerId, string customerName, int addressId, int active)
+        //modify  customer
+        public static void ModifyCustomer(int customerId, string customerName, int addressId, int active)
         {
             string timestamp = DataManager.createTimeStamp();
 
@@ -163,7 +175,7 @@ namespace C969_Oliver
         }
 
         //Delete  customer
-        public static void DeleteCustomer(int customerId)
+        public static bool DeleteCustomer(int customerId)
         {
             string qry = $"DELETE FROM appointment WHERE customerId = '{customerId}'";
             MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
@@ -174,10 +186,11 @@ namespace C969_Oliver
             cmd.ExecuteNonQuery();
         }
 
+
         //Get customer information from the database
         public static DataTable GetCustomerInfo()
         {
-            string qry = "SELECT customerId, customerName, address, address2, city, country, postalCode, phone " +
+            string qry = "SELECT customerId, customerName, address, address2, city, country, zipCode, phone " +
                          "FROM customer " +
                          "INNER JOIN address " +
                          "ON customer.addressId = address.addressId " +
@@ -187,8 +200,8 @@ namespace C969_Oliver
                          "ON city.countryId = country.countryId";
 
             MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
-            MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-            adp.Fill(customers);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            adapter.Fill(customers);
             return customers;
         }
     }

@@ -103,6 +103,7 @@
             this.btnCloseApptReport.TabIndex = 5;
             this.btnCloseApptReport.Text = "Close";
             this.btnCloseApptReport.UseVisualStyleBackColor = false;
+            this.btnCloseApptReport.Click += new System.EventHandler(this.btnCloseApptReport_Click);
             // 
             // AppointmentsReport
             // 

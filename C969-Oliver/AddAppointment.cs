@@ -42,8 +42,8 @@ namespace C969_Oliver
             textUserIDAddAppt.Text = userNames.ToString();
         }
 
-        //Method to validate that fields are not empty
-        private bool ValidateFields()
+        //confirm fields are not empty
+        private bool confirmFields()
         {
             if (string.IsNullOrWhiteSpace(textCustomerIDAddAppt.Text))
             {
@@ -88,7 +88,7 @@ namespace C969_Oliver
         {
             try
             {
-                if (ValidateFields())
+                if (confirmFields())
                 {
                     // Fields are not valid, do nothing
                     return;

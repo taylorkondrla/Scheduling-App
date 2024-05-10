@@ -186,6 +186,7 @@
             this.btnSaveAddCust.TabIndex = 15;
             this.btnSaveAddCust.Text = "Save";
             this.btnSaveAddCust.UseVisualStyleBackColor = false;
+            this.btnSaveAddCust.Click += new System.EventHandler(this.btnSaveAddCust_Click);
             // 
             // btnCloseAddCust
             // 
@@ -197,6 +198,7 @@
             this.btnCloseAddCust.TabIndex = 16;
             this.btnCloseAddCust.Text = "Close";
             this.btnCloseAddCust.UseVisualStyleBackColor = false;
+            this.btnCloseAddCust.Click += new System.EventHandler(this.btnCloseAddCust_Click);
             // 
             // AddCustomer
             // 
