@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace C969_Oliver
 {
@@ -31,7 +32,7 @@ namespace C969_Oliver
             string query = "SELECT MAX(countryId) AS 'newCountryID' FROM country";
 
             // Execute the query
-            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection))
+            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
             {
                 using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
@@ -48,17 +49,36 @@ namespace C969_Oliver
         // Method to add new country
         public static Country addNewCountry(string countryName)
         {
-            int newCountryID = getNewCountryID();
+            try
+            {
+                // Ensure the database connection is opened before executing the query
+                DBConnection.OpenConnection();
 
-            Country newCountry = new Country(newCountryID, countryName);
+                int newCountryID = getNewCountryID();
 
-            string qry = $"INSERT INTO country " +
-                $"VALUES ('{newCountryID}', '{countryName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
+                Country newCountry = new Country(newCountryID, countryName);
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
-            cmd.ExecuteNonQuery();
+                string currentUser = LogIn.currentUser != null ? LogIn.currentUser.userName : "Unknown";
 
-            return newCountry;
+                string qry = $"INSERT INTO country " +
+                             $"VALUES ('{newCountryID}', '{countryName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{currentUser}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{currentUser}')";
+
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                cmd.ExecuteNonQuery();
+
+                return newCountry;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately (e.g., log or display error message)
+                MessageBox.Show("An error occurred while trying to add a new country: " + ex.Message);
+                return null; // Return null to indicate failure
+            }
+            finally
+            {
+                // Always ensure the connection is properly closed after use
+                DBConnection.CloseConnection();
+            }
         }
 
         // Method to get a country by name
@@ -66,31 +86,47 @@ namespace C969_Oliver
         {
             Country country = null;
 
-            // Query to retrieve country by name
-            string query = $"SELECT countryId, country FROM country WHERE country = @countryName";
-
-            // Execute the query
-            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection))
+            try
             {
-                cmd.Parameters.AddWithValue("@countryName", countryName);
+                // Ensure the database connection is opened before executing the query
+                DBConnection.OpenConnection();
 
-                using (MySqlDataReader rdr = cmd.ExecuteReader())
+                // Query to retrieve country by name
+                string query = $"SELECT countryId, country FROM country WHERE country = @countryName";
+
+                // Execute the query
+                using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
                 {
-                    while (rdr.Read())
+                    cmd.Parameters.AddWithValue("@countryName", countryName);
+
+                    using (MySqlDataReader rdr = cmd.ExecuteReader())
                     {
-                        country = new Country
+                        while (rdr.Read())
                         {
-                            CountryId = Convert.ToInt32(rdr["countryId"]),
-                            CountryName = rdr["country"].ToString()
-                        };
+                            country = new Country
+                            {
+                                CountryId = Convert.ToInt32(rdr["countryId"]),
+                                CountryName = rdr["country"].ToString()
+                            };
+                        }
                     }
                 }
-            }
 
-            // If country doesn't exist, create a new one
-            if (country == null)
+                // If country doesn't exist, create a new one
+                if (country == null)
+                {
+                    country = addNewCountry(countryName);
+                }
+            }
+            catch (Exception ex)
             {
-                country = addNewCountry(countryName);
+                // Handle exceptions appropriately (e.g., log or display error message)
+                MessageBox.Show("An error occurred while trying to retrieve country data: " + ex.Message);
+            }
+            finally
+            {
+                // Always ensure the connection is properly closed after use
+                DBConnection.CloseConnection();
             }
 
             return country;

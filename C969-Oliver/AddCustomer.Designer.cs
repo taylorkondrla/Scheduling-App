@@ -45,6 +45,8 @@
             this.textPhoneAddCust = new System.Windows.Forms.TextBox();
             this.btnSaveAddCust = new System.Windows.Forms.Button();
             this.btnCloseAddCust = new System.Windows.Forms.Button();
+            this.textAddress2AddCust = new System.Windows.Forms.TextBox();
+            this.address2AddCustLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // addCustomerLabel
@@ -91,7 +93,7 @@
             // 
             this.cityAddCustLabel.AutoSize = true;
             this.cityAddCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cityAddCustLabel.Location = new System.Drawing.Point(17, 209);
+            this.cityAddCustLabel.Location = new System.Drawing.Point(17, 237);
             this.cityAddCustLabel.Name = "cityAddCustLabel";
             this.cityAddCustLabel.Size = new System.Drawing.Size(47, 25);
             this.cityAddCustLabel.TabIndex = 4;
@@ -101,7 +103,7 @@
             // 
             this.countryAddCustLabel.AutoSize = true;
             this.countryAddCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.countryAddCustLabel.Location = new System.Drawing.Point(17, 256);
+            this.countryAddCustLabel.Location = new System.Drawing.Point(17, 281);
             this.countryAddCustLabel.Name = "countryAddCustLabel";
             this.countryAddCustLabel.Size = new System.Drawing.Size(85, 25);
             this.countryAddCustLabel.TabIndex = 5;
@@ -143,21 +145,21 @@
             // 
             // textAddressAddCust
             // 
-            this.textAddressAddCust.Location = new System.Drawing.Point(228, 173);
+            this.textAddressAddCust.Location = new System.Drawing.Point(228, 168);
             this.textAddressAddCust.Name = "textAddressAddCust";
             this.textAddressAddCust.Size = new System.Drawing.Size(197, 20);
             this.textAddressAddCust.TabIndex = 10;
             // 
             // textCityAddCust
             // 
-            this.textCityAddCust.Location = new System.Drawing.Point(228, 216);
+            this.textCityAddCust.Location = new System.Drawing.Point(227, 237);
             this.textCityAddCust.Name = "textCityAddCust";
             this.textCityAddCust.Size = new System.Drawing.Size(197, 20);
             this.textCityAddCust.TabIndex = 11;
             // 
             // textCountryAddCust
             // 
-            this.textCountryAddCust.Location = new System.Drawing.Point(228, 264);
+            this.textCountryAddCust.Location = new System.Drawing.Point(226, 281);
             this.textCountryAddCust.Name = "textCountryAddCust";
             this.textCountryAddCust.Size = new System.Drawing.Size(196, 20);
             this.textCountryAddCust.TabIndex = 12;
@@ -200,12 +202,31 @@
             this.btnCloseAddCust.UseVisualStyleBackColor = false;
             this.btnCloseAddCust.Click += new System.EventHandler(this.btnCloseAddCust_Click);
             // 
+            // textAddress2AddCust
+            // 
+            this.textAddress2AddCust.Location = new System.Drawing.Point(226, 204);
+            this.textAddress2AddCust.Name = "textAddress2AddCust";
+            this.textAddress2AddCust.Size = new System.Drawing.Size(196, 20);
+            this.textAddress2AddCust.TabIndex = 17;
+            // 
+            // address2AddCustLabel
+            // 
+            this.address2AddCustLabel.AutoSize = true;
+            this.address2AddCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.address2AddCustLabel.Location = new System.Drawing.Point(18, 205);
+            this.address2AddCustLabel.Name = "address2AddCustLabel";
+            this.address2AddCustLabel.Size = new System.Drawing.Size(102, 25);
+            this.address2AddCustLabel.TabIndex = 18;
+            this.address2AddCustLabel.Text = "Address 2";
+            // 
             // AddCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(454, 503);
+            this.Controls.Add(this.address2AddCustLabel);
+            this.Controls.Add(this.textAddress2AddCust);
             this.Controls.Add(this.btnCloseAddCust);
             this.Controls.Add(this.btnSaveAddCust);
             this.Controls.Add(this.textPhoneAddCust);
@@ -249,5 +270,7 @@
         private System.Windows.Forms.TextBox textPhoneAddCust;
         private System.Windows.Forms.Button btnSaveAddCust;
         private System.Windows.Forms.Button btnCloseAddCust;
+        private System.Windows.Forms.TextBox textAddress2AddCust;
+        private System.Windows.Forms.Label address2AddCustLabel;
     }
 }

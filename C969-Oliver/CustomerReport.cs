@@ -21,7 +21,7 @@ namespace C969_Oliver
 
         private void LoadEventHandlers()
         {
-            //add event handlers for radio buttons
+            // Add event handlers for radio buttons
             rdbtnJanCR.CheckedChanged += RadioButton_CheckedChanged;
             rdbtnFebCR.CheckedChanged += RadioButton_CheckedChanged;
             rdbtnMarCR.CheckedChanged += RadioButton_CheckedChanged;
@@ -39,50 +39,23 @@ namespace C969_Oliver
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
-            if (radioButton.Checked)
+            if (radioButton.Checked && radioButton.Text.Length >= 7) // Check if text has at least 7 characters
             {
                 string month = radioButton.Text.Substring(6);
-                //populate the data grid with customer report data for the selected month
-                PopulateCustomerReportDataGrid(month); 
+                // Populate the data grid with customer report data for the selected month
+                PopulateCustomerReportDataGrid(month);
             }
         }
 
         private void PopulateCustomerReportDataGrid(string month)
         {
-            DataTable dataTable = GetCustomerReportDataForMonth(month);
-            customerReportDataGrid.DataSource = dataTable; 
+            DataTable dataTable = DataManager.GetCustomerReportDataForMonth(month);
+            customerReportDataGrid.DataSource = dataTable;
         }
 
-        private DataTable GetCustomerReportDataForMonth(string month)
+        private void btnCloseCustomerReport_Click(object sender, EventArgs e)
         {
-            DataTable dataTable = new DataTable(); 
-            string query = @"
-                SELECT c.CustomerID, COUNT(a.AppointmentID) AS AppointmentCount
-                FROM Customers c
-                LEFT JOIN Appointments a ON c.CustomerID = a.CustomerID
-                WHERE MONTH(a.Date) = @Month
-                GROUP BY c.CustomerID";
-
-            //execute the SQL query
-            using (MySqlConnection connection = new MySqlConnection(DBConnection.connection.ConnectionString))
-            {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Month", GetMonthNumber(month)); 
-                    connection.Open();
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
-                    {
-                        adapter.Fill(dataTable); 
-                    }
-                }
-            }
-
-            return dataTable; // Return the populated DataTable
-        }
-
-        private int GetMonthNumber(string month)
-        {
-            return DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.InvariantCulture).Month;
+            this.Close();
         }
     }   
 }

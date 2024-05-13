@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.apptReportLabel = new System.Windows.Forms.Label();
-            this.apptReportDataGrid = new System.Windows.Forms.DataGridView();
             this.rdbtnWeekly = new System.Windows.Forms.RadioButton();
             this.rdbtnMonthly = new System.Windows.Forms.RadioButton();
             this.rdbtnAllAppts = new System.Windows.Forms.RadioButton();
             this.btnCloseApptReport = new System.Windows.Forms.Button();
+            this.apptReportDataGrid = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.apptReportDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,15 +47,6 @@
             this.apptReportLabel.Size = new System.Drawing.Size(162, 28);
             this.apptReportLabel.TabIndex = 0;
             this.apptReportLabel.Text = "Calendar View";
-            // 
-            // apptReportDataGrid
-            // 
-            this.apptReportDataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.apptReportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.apptReportDataGrid.Location = new System.Drawing.Point(18, 45);
-            this.apptReportDataGrid.Name = "apptReportDataGrid";
-            this.apptReportDataGrid.Size = new System.Drawing.Size(809, 238);
-            this.apptReportDataGrid.TabIndex = 1;
             // 
             // rdbtnWeekly
             // 
@@ -105,6 +96,18 @@
             this.btnCloseApptReport.UseVisualStyleBackColor = false;
             this.btnCloseApptReport.Click += new System.EventHandler(this.btnCloseApptReport_Click);
             // 
+            // apptReportDataGrid
+            // 
+            this.apptReportDataGrid.AutoGenerateColumns = global::C969_Oliver.Properties.Settings.Default.AutoGenerteColumn;
+            this.apptReportDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.apptReportDataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.apptReportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.apptReportDataGrid.DataBindings.Add(new System.Windows.Forms.Binding("AutoGenerateColumns", global::C969_Oliver.Properties.Settings.Default, "AutoGenerteColumn", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.apptReportDataGrid.Location = new System.Drawing.Point(18, 45);
+            this.apptReportDataGrid.Name = "apptReportDataGrid";
+            this.apptReportDataGrid.Size = new System.Drawing.Size(809, 238);
+            this.apptReportDataGrid.TabIndex = 1;
+            // 
             // AppointmentsReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -128,10 +131,10 @@
         #endregion
 
         private System.Windows.Forms.Label apptReportLabel;
-        public System.Windows.Forms.DataGridView apptReportDataGrid;
         private System.Windows.Forms.RadioButton rdbtnWeekly;
         private System.Windows.Forms.RadioButton rdbtnMonthly;
         private System.Windows.Forms.RadioButton rdbtnAllAppts;
         private System.Windows.Forms.Button btnCloseApptReport;
+        private System.Windows.Forms.DataGridView apptReportDataGrid;
     }
 }

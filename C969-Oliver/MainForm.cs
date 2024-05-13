@@ -20,28 +20,7 @@ namespace C969_Oliver
             //Populate appointment data
             refreshAppointmentDataGrid();
 
-            //populate data grid appointments
-            mainApptDataGrid.Columns["appointmentId"].HeaderText = "Appointment ID";
-            mainApptDataGrid.Columns["customerId"].HeaderText = "Customer ID";
-            mainApptDataGrid.Columns["userId"].HeaderText = "User ID";
-            mainApptDataGrid.Columns["title"].HeaderText = "Title";
-            mainApptDataGrid.Columns["description"].HeaderText = "Description";
-            mainApptDataGrid.Columns["location"].HeaderText = "Location";
-            mainApptDataGrid.Columns["type"].HeaderText = "Type";
-            mainApptDataGrid.Columns["contact"].HeaderText = "Contact";
-            mainApptDataGrid.Columns["date"].HeaderText = "Date";
-            mainApptDataGrid.Columns["startTime"].HeaderText = "Start Time";
-            mainApptDataGrid.Columns["endTime"].HeaderText = "End Time";
-
-            //populate data grid customers
-            mainCustomersDataGrid.Columns["customerId"].HeaderText = "Customer ID";
-            mainCustomersDataGrid.Columns["customerName"].HeaderText = "Name";
-            mainCustomersDataGrid.Columns["address"].HeaderText = "Address";
-            mainCustomersDataGrid.Columns["address2"].HeaderText = "Address2";
-            mainCustomersDataGrid.Columns["city"].HeaderText = "City";
-            mainCustomersDataGrid.Columns["country"].HeaderText = "Country";
-            mainCustomersDataGrid.Columns["zipCode"].HeaderText = "Zip Code";
-            mainCustomersDataGrid.Columns["phone"].HeaderText = "Phone";
+            refreshCustomerDataGrid();
 
         }
         //reminder appointment within 15 minutes
@@ -99,12 +78,13 @@ namespace C969_Oliver
                 string location = selectedRow.Cells["location"].Value.ToString();
                 string type = selectedRow.Cells["type"].Value.ToString();
                 string contact = selectedRow.Cells["contact"].Value.ToString();
-                DateTime date = Convert.ToDateTime(selectedRow.Cells["date"].Value);
+                string url = selectedRow.Cells["url"].Value.ToString();
+                DateTime createDate = Convert.ToDateTime(selectedRow.Cells["createDate"].Value);
                 DateTime start = Convert.ToDateTime(selectedRow.Cells["start"].Value);
                 DateTime end = Convert.ToDateTime(selectedRow.Cells["end"].Value);
 
                 // Show the ModifyAppointment form and pass the retrieved values directly to its constructor
-                new ModifyAppointment(appointmentId, userId, customerId, title, description, location, type, contact, date, start, end).ShowDialog();
+                new ModifyAppointment(appointmentId, userId, customerId, title, description, location, type, contact, url, createDate, start, end).ShowDialog();
             }
             else
             {
@@ -133,11 +113,11 @@ namespace C969_Oliver
                 string address2 = selectedRow.Cells["address2"].Value.ToString();
                 string city = selectedRow.Cells["city"].Value.ToString();
                 string country = selectedRow.Cells["country"].Value.ToString();
-                string zipCode = selectedRow.Cells["zipCode"].Value.ToString(); 
+                string postalCode = selectedRow.Cells["postalCode"].Value.ToString(); 
                 string phone = selectedRow.Cells["phone"].Value.ToString();
 
                 // Show the ModifyCustomer form and pass the values directly to its constructor
-                new ModifyCustomer(customerId, customerName, address, address2, city, country, zipCode, phone).ShowDialog();
+                new ModifyCustomer(customerId, customerName, address, address2, city, country, postalCode, phone).ShowDialog();
             }
             else
             {
@@ -147,7 +127,7 @@ namespace C969_Oliver
         //open appointments report
         private void btnViewAppts_Click(object sender, EventArgs e)
         {
-            AppointmentsReport appointmentReport = new AppointmentsReport(mainApptDataGrid);
+            AppointmentsReport appointmentReport = new AppointmentsReport();
             appointmentReport.Show();
         }
 

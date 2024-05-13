@@ -43,8 +43,6 @@
             this.btnSaveAddAppt = new System.Windows.Forms.Button();
             this.btnCloseAddAppt = new System.Windows.Forms.Button();
             this.textApptIDAddAppt = new System.Windows.Forms.TextBox();
-            this.textUserIDAddAppt = new System.Windows.Forms.TextBox();
-            this.textCustomerIDAddAppt = new System.Windows.Forms.TextBox();
             this.textTitleAddAppt = new System.Windows.Forms.TextBox();
             this.textDescriptionAddAppt = new System.Windows.Forms.TextBox();
             this.textLocationAddAppt = new System.Windows.Forms.TextBox();
@@ -53,6 +51,10 @@
             this.dateAddAppt = new System.Windows.Forms.DateTimePicker();
             this.startTimeAddAppt = new System.Windows.Forms.DateTimePicker();
             this.endTimeAddAppt = new System.Windows.Forms.DateTimePicker();
+            this.comboBoxUser = new System.Windows.Forms.ComboBox();
+            this.comboBoxCustomer = new System.Windows.Forms.ComboBox();
+            this.urlAddApptLabel = new System.Windows.Forms.Label();
+            this.textURLAddAppt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // AddAppointmentLabel
@@ -139,7 +141,7 @@
             // 
             this.contactAddApptLabel.AutoSize = true;
             this.contactAddApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contactAddApptLabel.Location = new System.Drawing.Point(18, 336);
+            this.contactAddApptLabel.Location = new System.Drawing.Point(18, 376);
             this.contactAddApptLabel.Name = "contactAddApptLabel";
             this.contactAddApptLabel.Size = new System.Drawing.Size(84, 25);
             this.contactAddApptLabel.TabIndex = 8;
@@ -149,7 +151,7 @@
             // 
             this.dateAddApptLabel.AutoSize = true;
             this.dateAddApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateAddApptLabel.Location = new System.Drawing.Point(18, 377);
+            this.dateAddApptLabel.Location = new System.Drawing.Point(18, 411);
             this.dateAddApptLabel.Name = "dateAddApptLabel";
             this.dateAddApptLabel.Size = new System.Drawing.Size(55, 25);
             this.dateAddApptLabel.TabIndex = 9;
@@ -159,7 +161,7 @@
             // 
             this.startAddApptLabel.AutoSize = true;
             this.startAddApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startAddApptLabel.Location = new System.Drawing.Point(18, 421);
+            this.startAddApptLabel.Location = new System.Drawing.Point(18, 442);
             this.startAddApptLabel.Name = "startAddApptLabel";
             this.startAddApptLabel.Size = new System.Drawing.Size(106, 25);
             this.startAddApptLabel.TabIndex = 10;
@@ -169,7 +171,7 @@
             // 
             this.EndAddApptLabel.AutoSize = true;
             this.EndAddApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EndAddApptLabel.Location = new System.Drawing.Point(18, 464);
+            this.EndAddApptLabel.Location = new System.Drawing.Point(18, 483);
             this.EndAddApptLabel.Name = "EndAddApptLabel";
             this.EndAddApptLabel.Size = new System.Drawing.Size(97, 25);
             this.EndAddApptLabel.TabIndex = 11;
@@ -206,20 +208,6 @@
             this.textApptIDAddAppt.Size = new System.Drawing.Size(192, 20);
             this.textApptIDAddAppt.TabIndex = 14;
             // 
-            // textUserIDAddAppt
-            // 
-            this.textUserIDAddAppt.Location = new System.Drawing.Point(215, 101);
-            this.textUserIDAddAppt.Name = "textUserIDAddAppt";
-            this.textUserIDAddAppt.Size = new System.Drawing.Size(192, 20);
-            this.textUserIDAddAppt.TabIndex = 15;
-            // 
-            // textCustomerIDAddAppt
-            // 
-            this.textCustomerIDAddAppt.Location = new System.Drawing.Point(215, 143);
-            this.textCustomerIDAddAppt.Name = "textCustomerIDAddAppt";
-            this.textCustomerIDAddAppt.Size = new System.Drawing.Size(193, 20);
-            this.textCustomerIDAddAppt.TabIndex = 16;
-            // 
             // textTitleAddAppt
             // 
             this.textTitleAddAppt.Location = new System.Drawing.Point(215, 184);
@@ -250,7 +238,7 @@
             // 
             // textContactAddAppt
             // 
-            this.textContactAddAppt.Location = new System.Drawing.Point(215, 342);
+            this.textContactAddAppt.Location = new System.Drawing.Point(217, 376);
             this.textContactAddAppt.Name = "textContactAddAppt";
             this.textContactAddAppt.Size = new System.Drawing.Size(193, 20);
             this.textContactAddAppt.TabIndex = 21;
@@ -259,7 +247,7 @@
             // 
             this.dateAddAppt.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateAddAppt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateAddAppt.Location = new System.Drawing.Point(216, 383);
+            this.dateAddAppt.Location = new System.Drawing.Point(216, 411);
             this.dateAddAppt.Name = "dateAddAppt";
             this.dateAddAppt.Size = new System.Drawing.Size(189, 25);
             this.dateAddAppt.TabIndex = 22;
@@ -268,7 +256,7 @@
             // 
             this.startTimeAddAppt.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startTimeAddAppt.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.startTimeAddAppt.Location = new System.Drawing.Point(216, 424);
+            this.startTimeAddAppt.Location = new System.Drawing.Point(216, 442);
             this.startTimeAddAppt.Name = "startTimeAddAppt";
             this.startTimeAddAppt.ShowUpDown = true;
             this.startTimeAddAppt.Size = new System.Drawing.Size(188, 25);
@@ -280,11 +268,44 @@
             this.endTimeAddAppt.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
             this.endTimeAddAppt.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.endTimeAddAppt.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.endTimeAddAppt.Location = new System.Drawing.Point(217, 468);
+            this.endTimeAddAppt.Location = new System.Drawing.Point(217, 483);
             this.endTimeAddAppt.Name = "endTimeAddAppt";
             this.endTimeAddAppt.ShowUpDown = true;
             this.endTimeAddAppt.Size = new System.Drawing.Size(187, 25);
             this.endTimeAddAppt.TabIndex = 24;
+            // 
+            // comboBoxUser
+            // 
+            this.comboBoxUser.FormattingEnabled = true;
+            this.comboBoxUser.Location = new System.Drawing.Point(217, 100);
+            this.comboBoxUser.Name = "comboBoxUser";
+            this.comboBoxUser.Size = new System.Drawing.Size(190, 21);
+            this.comboBoxUser.TabIndex = 25;
+            // 
+            // comboBoxCustomer
+            // 
+            this.comboBoxCustomer.FormattingEnabled = true;
+            this.comboBoxCustomer.Location = new System.Drawing.Point(215, 142);
+            this.comboBoxCustomer.Name = "comboBoxCustomer";
+            this.comboBoxCustomer.Size = new System.Drawing.Size(189, 21);
+            this.comboBoxCustomer.TabIndex = 26;
+            // 
+            // urlAddApptLabel
+            // 
+            this.urlAddApptLabel.AutoSize = true;
+            this.urlAddApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.urlAddApptLabel.Location = new System.Drawing.Point(25, 334);
+            this.urlAddApptLabel.Name = "urlAddApptLabel";
+            this.urlAddApptLabel.Size = new System.Drawing.Size(48, 25);
+            this.urlAddApptLabel.TabIndex = 27;
+            this.urlAddApptLabel.Text = "URL";
+            // 
+            // textURLAddAppt
+            // 
+            this.textURLAddAppt.Location = new System.Drawing.Point(216, 334);
+            this.textURLAddAppt.Name = "textURLAddAppt";
+            this.textURLAddAppt.Size = new System.Drawing.Size(190, 20);
+            this.textURLAddAppt.TabIndex = 28;
             // 
             // AddAppointment
             // 
@@ -292,6 +313,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(466, 589);
+            this.Controls.Add(this.textURLAddAppt);
+            this.Controls.Add(this.urlAddApptLabel);
+            this.Controls.Add(this.comboBoxCustomer);
+            this.Controls.Add(this.comboBoxUser);
             this.Controls.Add(this.endTimeAddAppt);
             this.Controls.Add(this.startTimeAddAppt);
             this.Controls.Add(this.dateAddAppt);
@@ -300,8 +325,6 @@
             this.Controls.Add(this.textLocationAddAppt);
             this.Controls.Add(this.textDescriptionAddAppt);
             this.Controls.Add(this.textTitleAddAppt);
-            this.Controls.Add(this.textCustomerIDAddAppt);
-            this.Controls.Add(this.textUserIDAddAppt);
             this.Controls.Add(this.textApptIDAddAppt);
             this.Controls.Add(this.btnCloseAddAppt);
             this.Controls.Add(this.btnSaveAddAppt);
@@ -341,8 +364,6 @@
         private System.Windows.Forms.Button btnSaveAddAppt;
         private System.Windows.Forms.Button btnCloseAddAppt;
         private System.Windows.Forms.TextBox textApptIDAddAppt;
-        private System.Windows.Forms.TextBox textUserIDAddAppt;
-        private System.Windows.Forms.TextBox textCustomerIDAddAppt;
         private System.Windows.Forms.TextBox textTitleAddAppt;
         private System.Windows.Forms.TextBox textDescriptionAddAppt;
         private System.Windows.Forms.TextBox textLocationAddAppt;
@@ -351,5 +372,9 @@
         private System.Windows.Forms.DateTimePicker dateAddAppt;
         private System.Windows.Forms.DateTimePicker startTimeAddAppt;
         private System.Windows.Forms.DateTimePicker endTimeAddAppt;
+        private System.Windows.Forms.ComboBox comboBoxUser;
+        private System.Windows.Forms.ComboBox comboBoxCustomer;
+        private System.Windows.Forms.Label urlAddApptLabel;
+        private System.Windows.Forms.TextBox textURLAddAppt;
     }
 }

@@ -15,7 +15,7 @@ namespace C969_Oliver
     {
         //create instance of mainform that will refresh datagrid
         MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
-        public ModifyAppointment(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, DateTime date, DateTime start, DateTime end)
+        public ModifyAppointment(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, string url, DateTime createDate, DateTime start, DateTime end)
         {
             InitializeComponent();
 
@@ -33,7 +33,8 @@ namespace C969_Oliver
             textLocationModAppt.Text = location;
             textTypeModAppt.Text = type;
             textContactModAppt.Text = contact;
-            dateModAppt.Value = date;
+            textURLModAppt.Text = url;
+            dateModAppt.Value = createDate;
             startTimeModAppt.Value = start;
             endTimeModAppt.Value = end;
 
@@ -69,6 +70,10 @@ namespace C969_Oliver
                 MessageBox.Show("Please enter a Contact.");
                 return true;
             }
+            if (string.IsNullOrEmpty(textURLModAppt.Text))
+            {
+                MessageBox.Show("Please enter a URL.");
+            }
             
             return false;
         }
@@ -94,6 +99,8 @@ namespace C969_Oliver
                     textLocationModAppt.Text,
                     textTypeModAppt.Text,
                     textContactModAppt.Text,
+                    textURLModAppt.Text,
+                    dateModAppt.Value,
                     startTimeModAppt.Value,
                     endTimeModAppt.Value
                 );

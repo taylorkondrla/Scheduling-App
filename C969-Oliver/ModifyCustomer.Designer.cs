@@ -45,6 +45,8 @@
             this.textPhoneModCust = new System.Windows.Forms.TextBox();
             this.btnSaveModCust = new System.Windows.Forms.Button();
             this.btnCloseModCust = new System.Windows.Forms.Button();
+            this.address2ModCustLabel = new System.Windows.Forms.Label();
+            this.textBaddress2ModCust = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // modifyCustomerLabel
@@ -91,7 +93,7 @@
             // 
             this.cityModCustLabel.AutoSize = true;
             this.cityModCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cityModCustLabel.Location = new System.Drawing.Point(24, 207);
+            this.cityModCustLabel.Location = new System.Drawing.Point(24, 229);
             this.cityModCustLabel.Name = "cityModCustLabel";
             this.cityModCustLabel.Size = new System.Drawing.Size(47, 25);
             this.cityModCustLabel.TabIndex = 4;
@@ -101,7 +103,7 @@
             // 
             this.countryModCustLabel.AutoSize = true;
             this.countryModCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.countryModCustLabel.Location = new System.Drawing.Point(24, 252);
+            this.countryModCustLabel.Location = new System.Drawing.Point(24, 269);
             this.countryModCustLabel.Name = "countryModCustLabel";
             this.countryModCustLabel.Size = new System.Drawing.Size(85, 25);
             this.countryModCustLabel.TabIndex = 5;
@@ -111,7 +113,7 @@
             // 
             this.zipModCustLabel.AutoSize = true;
             this.zipModCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.zipModCustLabel.Location = new System.Drawing.Point(24, 298);
+            this.zipModCustLabel.Location = new System.Drawing.Point(24, 303);
             this.zipModCustLabel.Name = "zipModCustLabel";
             this.zipModCustLabel.Size = new System.Drawing.Size(95, 25);
             this.zipModCustLabel.TabIndex = 6;
@@ -150,21 +152,21 @@
             // 
             // textCityModCust
             // 
-            this.textCityModCust.Location = new System.Drawing.Point(252, 213);
+            this.textCityModCust.Location = new System.Drawing.Point(252, 234);
             this.textCityModCust.Name = "textCityModCust";
             this.textCityModCust.Size = new System.Drawing.Size(197, 20);
             this.textCityModCust.TabIndex = 11;
             // 
             // textCountryModCust
             // 
-            this.textCountryModCust.Location = new System.Drawing.Point(252, 258);
+            this.textCountryModCust.Location = new System.Drawing.Point(252, 274);
             this.textCountryModCust.Name = "textCountryModCust";
             this.textCountryModCust.Size = new System.Drawing.Size(197, 20);
             this.textCountryModCust.TabIndex = 12;
             // 
             // textZipModCust
             // 
-            this.textZipModCust.Location = new System.Drawing.Point(252, 303);
+            this.textZipModCust.Location = new System.Drawing.Point(252, 308);
             this.textZipModCust.Name = "textZipModCust";
             this.textZipModCust.Size = new System.Drawing.Size(197, 20);
             this.textZipModCust.TabIndex = 13;
@@ -200,12 +202,31 @@
             this.btnCloseModCust.UseVisualStyleBackColor = false;
             this.btnCloseModCust.Click += new System.EventHandler(this.btnCloseModCust_Click);
             // 
+            // address2ModCustLabel
+            // 
+            this.address2ModCustLabel.AutoSize = true;
+            this.address2ModCustLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.address2ModCustLabel.Location = new System.Drawing.Point(23, 189);
+            this.address2ModCustLabel.Name = "address2ModCustLabel";
+            this.address2ModCustLabel.Size = new System.Drawing.Size(102, 25);
+            this.address2ModCustLabel.TabIndex = 17;
+            this.address2ModCustLabel.Text = "Address 2";
+            // 
+            // textBaddress2ModCust
+            // 
+            this.textBaddress2ModCust.Location = new System.Drawing.Point(251, 193);
+            this.textBaddress2ModCust.Name = "textBaddress2ModCust";
+            this.textBaddress2ModCust.Size = new System.Drawing.Size(196, 20);
+            this.textBaddress2ModCust.TabIndex = 18;
+            // 
             // ModifyCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(480, 511);
+            this.Controls.Add(this.textBaddress2ModCust);
+            this.Controls.Add(this.address2ModCustLabel);
             this.Controls.Add(this.btnCloseModCust);
             this.Controls.Add(this.btnSaveModCust);
             this.Controls.Add(this.textPhoneModCust);
@@ -249,5 +270,7 @@
         private System.Windows.Forms.TextBox textPhoneModCust;
         private System.Windows.Forms.Button btnSaveModCust;
         private System.Windows.Forms.Button btnCloseModCust;
+        private System.Windows.Forms.Label address2ModCustLabel;
+        private System.Windows.Forms.TextBox textBaddress2ModCust;
     }
 }

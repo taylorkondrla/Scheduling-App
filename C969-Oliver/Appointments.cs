@@ -24,8 +24,8 @@ namespace C969_Oliver
         public string location { get; set; }
         public string type { get; set; }
         public string contact { get; set; } 
-        
-        public DateTime date { get; set; }
+        public string url { get; set; }
+        public DateTime createDate { get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
 
@@ -37,7 +37,7 @@ namespace C969_Oliver
 
         public Appointments() { }
 
-        public Appointments(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, DateTime start, DateTime end)
+        public Appointments(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, string url, DateTime createDate, DateTime start, DateTime end)
         {
             this.appointmentId = appointmentId;
             this.userId = userId;
@@ -47,6 +47,8 @@ namespace C969_Oliver
             this.location = location;
             this.type = type;
             this.contact = contact;
+            this.url = url;
+            this.createDate = createDate;
             this.start = start;
             this.end = end;
         }
@@ -56,40 +58,37 @@ namespace C969_Oliver
         //get all appointments
         public static DataTable GetAllAppointments()
         {
-            string connectionString = DBConnection.connection.ConnectionString; // Get the connection string
-            string qry = "SELECT appointmentId, userId, customerId, title, description, location, type, contact, start, end " +
-                         "FROM appointment";
+            DBConnection.OpenConnection();
+            appointmentsData.Clear();
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            string qry = "SELECT appointmentId, customerId, userId, title, description, location, contact, type, url, start, end " +
+                "FROM appointment";
+
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+            MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+
+            adp.Fill(appointmentsData);
+
+            for (int i = 0; i < appointmentsData.Rows.Count; i++)
             {
-                connection.Open();
+                DateTime start = (DateTime)appointmentsData.Rows[i]["start"];
+                appointmentsData.Rows[i]["start"] = start.ToLocalTime();
 
-                using (MySqlCommand cmd = new MySqlCommand(qry, connection))
-                {
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                    {
-                        DataTable appointmentsData = new DataTable();
-                        adapter.Fill(appointmentsData);
+                DateTime end = (DateTime)appointmentsData.Rows[i]["end"];
+                appointmentsData.Rows[i]["end"] = end.ToLocalTime();
 
-                        foreach (DataRow row in appointmentsData.Rows)
-                        {
-                            row["start"] = ((DateTime)row["start"]).ToLocalTime();
-                            row["end"] = ((DateTime)row["end"]).ToLocalTime();
-                        }
-
-                        return appointmentsData;
-                    }
-                }
             }
+
+            return appointmentsData;
         }
         //create new appointments id
         public static int NewAppointmentID()
         {
             int newId = 0;
 
-            string query = "SELECT MAX(appointmentId) AS 'newId' FROM appointmentd";
+            string query = "SELECT MAX(appointmentId) AS 'newId' FROM appointment";
 
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -105,10 +104,30 @@ namespace C969_Oliver
         //create appointment
         public static void CreateAppointment(Appointments appointments)
         {
-            string qry = $"INSERT INTO appointment " +
-                $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointments.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
+            // Check if the appointments object is null
+            if (appointments == null)
+            {
+                throw new ArgumentNullException(nameof(appointments), "The appointments object is null.");
+            }
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            // Check if any required properties are null
+            if (appointments.userId <= 0 || appointments.customerId <= 0)
+            {
+                throw new ArgumentException("User ID and Customer ID must be greater than 0.");
+            }
+
+            // Check if start and end dates are valid
+            if (appointments.start == default || appointments.end == default || appointments.start >= appointments.end)
+            {
+                throw new ArgumentException("Invalid start or end date.");
+            }
+
+            // Construct the SQL query
+            string qry = $"INSERT INTO appointment (appointmentId, userId, customerId, title, description, location, type, contact, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+                $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointments.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.url}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}')";
+
+
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             cmd.ExecuteNonQuery();
         }
 
@@ -118,7 +137,7 @@ namespace C969_Oliver
         {
             string qry = $"DELETE FROM appointment WHERE appointmentId = '{appointmentId}'";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             int rowsAffected = cmd.ExecuteNonQuery();
 
             // Check if any rows were affected (i.e., if the deletion was successful)
@@ -138,13 +157,14 @@ namespace C969_Oliver
                 $"location = '{appointments.location}', " +
                 $"contact = '{appointments.type}', " +
                 $"type = '{appointments.contact}', " +
+                $"url = '{appointments.url}', " +
                 $"start = '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
                 $"end = '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
                 $"lastUpdate = '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
                 $"lastUpdateBy = '{LogIn.currentUser.userName}' " +
                 $"WHERE appointmentId = '{appointments.appointmentId}'";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             cmd.ExecuteNonQuery();
         }
 
@@ -173,7 +193,7 @@ namespace C969_Oliver
         {
             string qry = $"SELECT * FROM appointment WHERE userId = '{appointments.userId}' and ((start >= '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}' and start <= '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}') or (end >= '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}' and end <= '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}'))";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             reader.Read();
@@ -208,7 +228,7 @@ namespace C969_Oliver
                          $"AND start < '{startOfWeek.AddDays(7):yyyy-MM-dd}'";
 
             // Execute the query and fill the DataTable
-            using (MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection))
+            using (MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
@@ -240,7 +260,7 @@ namespace C969_Oliver
                          $"AND start < '{DateTime.Now.AddMonths(1):yyyy-MM-01}'"; // Start of next month
 
             // Execute the query and fill the DataTable
-            using (MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection))
+            using (MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
@@ -257,6 +277,55 @@ namespace C969_Oliver
 
             // Return the DataTable containing appointments for the current month
             return appointmentsData;
+        }
+        // Get distinct user IDs from the appointments table
+        public static List<int> GetDistinctUserIds()
+        {
+            List<int> userIds = new List<int>();
+
+            // Construct SQL query to select distinct user IDs
+            string query = "SELECT DISTINCT userId FROM appointment";
+
+            // Execute the query
+            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
+            {
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    // Read user IDs from the result set
+                    while (reader.Read())
+                    {
+                        int userId = reader.GetInt32("userId");
+                        userIds.Add(userId);
+                    }
+                }
+            }
+
+            return userIds;
+        }
+
+        // Get distinct customer IDs from the appointments table
+        public static List<int> GetDistinctCustomerIds()
+        {
+            List<int> customerIds = new List<int>();
+
+            // Construct SQL query to select distinct customer IDs
+            string query = "SELECT DISTINCT customerId FROM appointment";
+
+            // Execute the query
+            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
+            {
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    // Read customer IDs from the result set
+                    while (reader.Read())
+                    {
+                        int customerId = reader.GetInt32("customerId");
+                        customerIds.Add(customerId);
+                    }
+                }
+            }
+
+            return customerIds;
         }
 
     }

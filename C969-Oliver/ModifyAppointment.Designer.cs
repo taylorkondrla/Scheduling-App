@@ -53,6 +53,8 @@
             this.endTimeModAppt = new System.Windows.Forms.DateTimePicker();
             this.btnSaveModAppt = new System.Windows.Forms.Button();
             this.btnCloseModAppt = new System.Windows.Forms.Button();
+            this.urlModApptLabel = new System.Windows.Forms.Label();
+            this.textURLModAppt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // modifyApptLabel
@@ -139,7 +141,7 @@
             // 
             this.contactModApptLabel.AutoSize = true;
             this.contactModApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contactModApptLabel.Location = new System.Drawing.Point(16, 338);
+            this.contactModApptLabel.Location = new System.Drawing.Point(16, 376);
             this.contactModApptLabel.Name = "contactModApptLabel";
             this.contactModApptLabel.Size = new System.Drawing.Size(84, 25);
             this.contactModApptLabel.TabIndex = 8;
@@ -149,7 +151,7 @@
             // 
             this.dateModApptLabel.AutoSize = true;
             this.dateModApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateModApptLabel.Location = new System.Drawing.Point(17, 377);
+            this.dateModApptLabel.Location = new System.Drawing.Point(17, 417);
             this.dateModApptLabel.Name = "dateModApptLabel";
             this.dateModApptLabel.Size = new System.Drawing.Size(55, 25);
             this.dateModApptLabel.TabIndex = 9;
@@ -159,7 +161,7 @@
             // 
             this.startTimeModApptLabel.AutoSize = true;
             this.startTimeModApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startTimeModApptLabel.Location = new System.Drawing.Point(17, 420);
+            this.startTimeModApptLabel.Location = new System.Drawing.Point(17, 443);
             this.startTimeModApptLabel.Name = "startTimeModApptLabel";
             this.startTimeModApptLabel.Size = new System.Drawing.Size(106, 25);
             this.startTimeModApptLabel.TabIndex = 10;
@@ -169,7 +171,7 @@
             // 
             this.endTimeModApptLabel.AutoSize = true;
             this.endTimeModApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.endTimeModApptLabel.Location = new System.Drawing.Point(17, 468);
+            this.endTimeModApptLabel.Location = new System.Drawing.Point(17, 479);
             this.endTimeModApptLabel.Name = "endTimeModApptLabel";
             this.endTimeModApptLabel.Size = new System.Drawing.Size(97, 25);
             this.endTimeModApptLabel.TabIndex = 11;
@@ -226,7 +228,7 @@
             // 
             // textContactModAppt
             // 
-            this.textContactModAppt.Location = new System.Drawing.Point(212, 338);
+            this.textContactModAppt.Location = new System.Drawing.Point(212, 376);
             this.textContactModAppt.Name = "textContactModAppt";
             this.textContactModAppt.Size = new System.Drawing.Size(217, 20);
             this.textContactModAppt.TabIndex = 19;
@@ -236,7 +238,7 @@
             this.dateModAppt.CalendarFont = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateModAppt.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateModAppt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateModAppt.Location = new System.Drawing.Point(212, 377);
+            this.dateModAppt.Location = new System.Drawing.Point(208, 417);
             this.dateModAppt.Name = "dateModAppt";
             this.dateModAppt.Size = new System.Drawing.Size(221, 25);
             this.dateModAppt.TabIndex = 20;
@@ -246,7 +248,7 @@
             this.startTimeModAppt.CalendarFont = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startTimeModAppt.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startTimeModAppt.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.startTimeModAppt.Location = new System.Drawing.Point(213, 420);
+            this.startTimeModAppt.Location = new System.Drawing.Point(209, 448);
             this.startTimeModAppt.Name = "startTimeModAppt";
             this.startTimeModAppt.ShowUpDown = true;
             this.startTimeModAppt.Size = new System.Drawing.Size(218, 25);
@@ -256,7 +258,7 @@
             // 
             this.endTimeModAppt.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.endTimeModAppt.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.endTimeModAppt.Location = new System.Drawing.Point(212, 468);
+            this.endTimeModAppt.Location = new System.Drawing.Point(209, 479);
             this.endTimeModAppt.Name = "endTimeModAppt";
             this.endTimeModAppt.ShowUpDown = true;
             this.endTimeModAppt.Size = new System.Drawing.Size(220, 25);
@@ -285,12 +287,31 @@
             this.btnCloseModAppt.UseVisualStyleBackColor = false;
             this.btnCloseModAppt.Click += new System.EventHandler(this.btnCloseModAppt_Click);
             // 
+            // urlModApptLabel
+            // 
+            this.urlModApptLabel.AutoSize = true;
+            this.urlModApptLabel.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.urlModApptLabel.Location = new System.Drawing.Point(21, 341);
+            this.urlModApptLabel.Name = "urlModApptLabel";
+            this.urlModApptLabel.Size = new System.Drawing.Size(48, 25);
+            this.urlModApptLabel.TabIndex = 25;
+            this.urlModApptLabel.Text = "URL";
+            // 
+            // textURLModAppt
+            // 
+            this.textURLModAppt.Location = new System.Drawing.Point(209, 341);
+            this.textURLModAppt.Name = "textURLModAppt";
+            this.textURLModAppt.Size = new System.Drawing.Size(215, 20);
+            this.textURLModAppt.TabIndex = 26;
+            // 
             // ModifyAppointment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(466, 589);
+            this.Controls.Add(this.textURLModAppt);
+            this.Controls.Add(this.urlModApptLabel);
             this.Controls.Add(this.btnCloseModAppt);
             this.Controls.Add(this.btnSaveModAppt);
             this.Controls.Add(this.endTimeModAppt);
@@ -350,5 +371,7 @@
         private System.Windows.Forms.DateTimePicker endTimeModAppt;
         private System.Windows.Forms.Button btnSaveModAppt;
         private System.Windows.Forms.Button btnCloseModAppt;
+        private System.Windows.Forms.Label urlModApptLabel;
+        private System.Windows.Forms.TextBox textURLModAppt;
     }
 }

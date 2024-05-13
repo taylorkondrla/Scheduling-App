@@ -28,7 +28,7 @@ namespace C969_Oliver
             User currentUser = new User();
 
             string qry = $"SELECT * FROM user WHERE userName = '{userName}' and password = '{password}'";
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read()) 
@@ -54,7 +54,7 @@ namespace C969_Oliver
             List<User> userList = new List<User>();
 
             string query = "SELECT * FROM user;";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read()) 
@@ -76,7 +76,7 @@ namespace C969_Oliver
         {
             User user = new User();
             string query = $"SELECT userID, userName FROM user WHERE userId = '{userId}'";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -92,7 +92,7 @@ namespace C969_Oliver
         { 
             User user = new User();
             string query = $"SELECT userID, userName FROM user WHERE userName = '{userName}'";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())

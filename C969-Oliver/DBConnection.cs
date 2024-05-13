@@ -9,25 +9,42 @@ using System.Windows.Forms;
 
 namespace C969_Oliver
 {
-    //connect to database
-    class DBConnection
+    // Connect to database
+    public static class DBConnection
     {
-        public static MySqlConnection connection {  get; set; }
+        public static MySqlConnection connection;
 
-        public static void startConnection()
+        // Get the connection instance
+        public static MySqlConnection Connection
+        {
+            get
+            {
+                if (connection == null)
+                {
+                    throw new InvalidOperationException("Connection has not been initialized.");
+                }
+                return connection;
+            }
+        }
+
+        // Open connection
+        public static void OpenConnection()
         {
             try
             {
-                string constr = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
-                connection = new MySqlConnection(constr);
+                string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
+                connection = new MySqlConnection(connectionString);
                 connection.Open();
             }
-            catch (MySqlException e)
+            catch (MySqlException ex)
             {
-                MessageBox.Show(e.Message);
+                // Log or throw the exception for better error handling
+                throw new Exception("Failed to open database connection.", ex);
             }
-        } 
-        public static void stopConnection()
+        }
+
+        // Close connection
+        public static void CloseConnection()
         {
             try
             {
@@ -35,11 +52,11 @@ namespace C969_Oliver
                 {
                     connection.Close();
                 }
-                connection = null;
             }
-            catch (MySqlException e)
+            catch (MySqlException ex)
             {
-                MessageBox.Show(e.Message);
+                // Log or throw the exception for better error handling
+                throw new Exception("Failed to close database connection.", ex);
             }
         }
     }

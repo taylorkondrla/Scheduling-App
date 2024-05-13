@@ -19,6 +19,7 @@ namespace C969_Oliver
             //Load appointment types when the form is initialized
             LoadAppointmentTypes();
         }
+
         // Add event handlers for radio buttons
         private void LoadAppointmentTypes()
         {
@@ -37,7 +38,7 @@ namespace C969_Oliver
             rdbtnDec.CheckedChanged += RadioButton_CheckedChanged;
         }
 
-        //populate the data grid with appointment type by month
+        // Populate the data grid with appointment types by month
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
@@ -50,35 +51,8 @@ namespace C969_Oliver
 
         private void PopulateAppointmentTypeDataGrid(string month)
         {
-            DataTable dataTable = GetAppointmentTypesForMonth(month);
+            DataTable dataTable = DataManager.GetAppointmentTypesForMonth(month);
             apptTypeDataGrid.DataSource = dataTable;
-        }
-
-        private DataTable GetAppointmentTypesForMonth(string month)
-        {
-            DataTable dataTable = new DataTable();
-            string query = "SELECT Type, COUNT(*) AS Count FROM Appointments WHERE MONTH(Date) = @Month GROUP BY Type";
-
-            using (MySqlConnection connection = new MySqlConnection(DBConnection.connection.ConnectionString))
-            {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Month", GetMonthNumber(month));
-                    connection.Open();
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
-                    {
-                        //fill table with the results of that query
-                        adapter.Fill(dataTable);
-                    }
-                }
-            }
-
-            return dataTable;
-        }
-
-        private int GetMonthNumber(string month)
-        {
-            return DateTime.ParseExact(month, "MMMM", System.Globalization.CultureInfo.InvariantCulture).Month;
         }
 
         private void btnCloseApptType_Click(object sender, EventArgs e)

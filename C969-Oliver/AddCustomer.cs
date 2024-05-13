@@ -13,18 +13,16 @@ namespace C969_Oliver
 {
     public partial class AddCustomer : Form
     {
-
-        //refresh customer data grid
+        // Refresh customer data grid
         MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
+
         public AddCustomer()
         {
             InitializeComponent();
-
             textCustomerIDAddCust.Text = Customer.GetNewCustomerID().ToString();
         }
 
-
-        //confirm all fields are not blank
+        // Confirm all fields are not blank
         private bool ConfirmFields()
         {
             if (string.IsNullOrWhiteSpace(textCustomerNameAddCust.Text))
@@ -57,12 +55,10 @@ namespace C969_Oliver
                 MessageBox.Show("Please enter a Phone Number.");
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-        //save add customer
+
+        // Save add customer
         private void btnSaveAddCust_Click(object sender, EventArgs e)
         {
             if (ConfirmFields()) { }
@@ -77,8 +73,8 @@ namespace C969_Oliver
                 {
                     //If customer does not exist, get or create country, city, address and create a new customer
                     Country country = Country.getCountry(textCountryAddCust.Text);
-                    City city = City.getCity(textCityAddCust.Text, country.CountryId);
-                    Address address = Address.GetAddress(textAddressAddCust.Text, city.CityId, textZipAddCust.Text, textPhoneAddCust.Text);
+                    City city = City.GetCity(textCityAddCust.Text, country.CountryId);
+                    Address address = Address.GetAddress(textAddressAddCust.Text, textAddress2AddCust.Text, city.cityId, textZipAddCust.Text, textPhoneAddCust.Text);
                     Customer.AddCustomer(textCustomerNameAddCust.Text, address.addressID, 1);
 
                     mainForm.refreshCustomerDataGrid();

@@ -99,8 +99,8 @@
         #endregion
 
         private System.Windows.Forms.Label consultantReportLabel;
-        public System.Windows.Forms.DataGridView consultantReportDataGrid;
         private System.Windows.Forms.ComboBox consultantDropDown;
         private System.Windows.Forms.Button btnCloseConsultantReport;
+        private System.Windows.Forms.DataGridView consultantReportDataGrid;
     }
 }

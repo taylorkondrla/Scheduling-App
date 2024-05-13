@@ -219,6 +219,7 @@
             this.btnCloseCustomerReport.TabIndex = 14;
             this.btnCloseCustomerReport.Text = "Close";
             this.btnCloseCustomerReport.UseVisualStyleBackColor = false;
+            this.btnCloseCustomerReport.Click += new System.EventHandler(this.btnCloseCustomerReport_Click);
             // 
             // CustomerReport
             // 

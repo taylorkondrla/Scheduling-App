@@ -44,7 +44,7 @@ namespace C969_Oliver
         {
             int newID = 0;
             string queryString = "SELECT MAX(customerId) AS 'newId' FROM customer";
-            MySqlCommand cmd = new MySqlCommand(queryString, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(queryString, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -65,7 +65,7 @@ namespace C969_Oliver
             string qry = $"INSERT INTO customer " +
                          $"VALUES ('{newCustomerId}', '{customerName}', '{addressId}', '{active}', '{timestamp}', '{uname}', '{timestamp}', '{uname}')";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             cmd.ExecuteNonQuery();
         }
 
@@ -74,7 +74,7 @@ namespace C969_Oliver
         {
             Customer customer = new Customer();
             string qry = $"SELECT customerId, customerName, addressId, active FROM customer WHERE customerName = '{customerName}'";
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -96,7 +96,7 @@ namespace C969_Oliver
         {
             Customer customer = new Customer();
             string qry = $"SELECT customerId, customerName, addressId, active FROM customer WHERE customerId = '{customerId}'";
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -118,7 +118,7 @@ namespace C969_Oliver
         {
             List<Customer> customerList = new List<Customer>();
             string query = "SELECT * FROM customer;";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             while (reader.Read())
@@ -138,19 +138,36 @@ namespace C969_Oliver
         public static bool ConfirmCustomer(string customerName)
         {
             bool customerExists = false;
-            string qry = $"SELECT customerId, customerName, addressId, active FROM customer WHERE customerName = '{customerName}'";
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+            try
             {
-                if (reader.HasRows)
+                // Ensure the database connection is opened before executing the query
+                DBConnection.OpenConnection();
+
+                string qry = $"SELECT customerId FROM customer WHERE customerName = '{customerName}'";
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    customerExists = true;
-                    MessageBox.Show("Customer already exists. Please update customer record.");
+                    // Check if any rows are returned
+                    if (reader.HasRows)
+                    {
+                        customerExists = true;
+                        MessageBox.Show("Customer already exists. Please update customer record.");
+                    }
                 }
             }
-            reader.Close();
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately (e.g., log or display error message)
+                MessageBox.Show("An error occurred while confirming customer existence: " + ex.Message);
+            }
+            finally
+            {
+                // Always ensure the connection is properly closed after use
+                DBConnection.CloseConnection();
+            }
+
             return customerExists;
         }
 
@@ -170,7 +187,7 @@ namespace C969_Oliver
                          $"lastUpdateBy = '{uname}' " + //uname is declared and assigned
                          $"WHERE customerId = '{customerId}'";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             cmd.ExecuteNonQuery();
         }
 
@@ -180,11 +197,11 @@ namespace C969_Oliver
             try
             {
                 string qry = $"DELETE FROM appointment WHERE customerId = '{customerId}'";
-                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
                 cmd.ExecuteNonQuery();
 
                 qry = $"DELETE FROM customer WHERE customerId = '{customerId}'";
-                cmd = new MySqlCommand(qry, DBConnection.connection);
+                cmd = new MySqlCommand(qry, DBConnection.Connection);
                 cmd.ExecuteNonQuery();
 
                 return true; // Deletion successful
@@ -200,7 +217,7 @@ namespace C969_Oliver
         //Get customer information from the database
         public static DataTable GetCustomerInfo()
         {
-            string qry = "SELECT customerId, customerName, address, address2, city, country, zipCode, phone " +
+            string qry = "SELECT customerId, customerName, address, address2, city, country, postalCode, phone " +
                          "FROM customer " +
                          "INNER JOIN address " +
                          "ON customer.addressId = address.addressId " +
@@ -209,7 +226,7 @@ namespace C969_Oliver
                          "INNER JOIN country " +
                          "ON city.countryId = country.countryId";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
             adapter.Fill(customers);
             return customers;

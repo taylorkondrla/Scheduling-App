@@ -12,41 +12,58 @@ namespace C969_Oliver
 {
     public partial class AddAppointment : Form
     {
-        //create instance of mainform that will refresh datagrid
+        // Create instance of mainform that will refresh datagrid
         MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
+
         public AddAppointment()
         {
             InitializeComponent();
 
-            //appointment id text box new appointment id
+            // Appointment ID textbox - new appointment ID
             textApptIDAddAppt.Text = Appointments.NewAppointmentID().ToString();
 
-            // Add customer names
-            List<Customer> customers = Customer.GetListCustomers();
-            StringBuilder customerNames = new StringBuilder();
-            // Lambda expression used here
-            customers.ForEach(customer => customerNames.AppendLine(customer.customerName));
-            textCustomerIDAddAppt.Text = customerNames.ToString();
-
-            // Add user names
-            List<User> users = User.GetUserList();
-            StringBuilder userNames = new StringBuilder();
-            // Lambda expression used here 
-            users.ForEach(user => userNames.AppendLine(user.userName));
-            textUserIDAddAppt.Text = userNames.ToString();
+            // Populate combo boxes with user IDs and customer IDs from appointments table
+            PopulateUserComboBox();
+            PopulateCustomerComboBox();
         }
 
-        //confirm fields are not empty
+        // Method to populate the user combo box
+        private void PopulateUserComboBox()
+        {
+            // Clear existing items
+            comboBoxUser.Items.Clear();
+
+            // Get distinct user IDs from appointments table
+            List<int> userIds = Appointments.GetDistinctUserIds();
+
+            // Add user IDs to combo box
+            userIds.ForEach(userId => comboBoxUser.Items.Add(userId));
+        }
+
+        // Method to populate the customer combo box
+        private void PopulateCustomerComboBox()
+        {
+            // Clear existing items
+            comboBoxCustomer.Items.Clear();
+
+            // Get distinct customer IDs from appointments table
+            List<int> customerIds = Appointments.GetDistinctCustomerIds();
+
+            // Add customer IDs to combo box
+            customerIds.ForEach(customerId => comboBoxCustomer.Items.Add(customerId));
+        }
+
+        // Confirm fields are not empty
         private bool confirmFields()
         {
-            if (string.IsNullOrWhiteSpace(textCustomerIDAddAppt.Text))
+            if (comboBoxCustomer.SelectedIndex == -1)
             {
-                MessageBox.Show("Please enter a Customer.");
+                MessageBox.Show("Please select a Customer.");
                 return true;
             }
-            if (string.IsNullOrWhiteSpace(textUserIDAddAppt.Text))
+            if (comboBoxUser.SelectedIndex == -1)
             {
-                MessageBox.Show("Please enter a User.");
+                MessageBox.Show("Please select a User.");
                 return true;
             }
             if (string.IsNullOrWhiteSpace(textTitleAddAppt.Text))
@@ -74,10 +91,14 @@ namespace C969_Oliver
                 MessageBox.Show("Please enter a Contact.");
                 return true;
             }
+            if (string.IsNullOrWhiteSpace(textURLAddAppt.Text))
+            {
+                MessageBox.Show("Please enter a URL.");
+            }
             return false;
         }
 
-        //save new appointment
+        // Save new appointment
         private void btnSaveAddAppt_Click(object sender, EventArgs e)
         {
             try
@@ -88,17 +109,21 @@ namespace C969_Oliver
                     return;
                 }
 
-                Customer customer = Customer.GetCustomerByName(textCustomerIDAddAppt.Text);
-                User user = User.GetUserByName(textUserIDAddAppt.Text);
+                // Retrieve user ID and customer ID from combo boxes
+                int userId = Convert.ToInt32(comboBoxUser.SelectedItem);
+                int customerId = Convert.ToInt32(comboBoxCustomer.SelectedItem);
+
                 Appointments newAppointment = new Appointments(
                     Convert.ToInt32(textApptIDAddAppt.Text),
-                    customer.customerId,
-                    user.userId,
+                    customerId,
+                    userId,
                     textTitleAddAppt.Text,
                     textDescriptionAddAppt.Text,
                     textLocationAddAppt.Text,
                     textTypeAddAppt.Text,
                     textContactAddAppt.Text,
+                    textURLAddAppt.Text,
+                    dateAddAppt.Value,
                     startTimeAddAppt.Value,
                     endTimeAddAppt.Value
                 );
@@ -117,7 +142,6 @@ namespace C969_Oliver
 
                     Appointments.CreateAppointment(newAppointment);
 
-                    
                     mainForm.refreshAppointmentDataGrid();
                     this.Close();
                 }
@@ -131,10 +155,12 @@ namespace C969_Oliver
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-        //close add appointment form
+
+        // Close add appointment form
         private void btnCloseAddAppt_Click(object sender, EventArgs e)
         {
             Close();
         }
     }
+    
 }

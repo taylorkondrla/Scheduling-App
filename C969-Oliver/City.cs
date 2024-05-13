@@ -4,99 +4,101 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace C969_Oliver
 {
     class City
     {
-        // Properties
-        public int CityId { get; set; }
-        public string Name { get; set; }
-        public int CountryId { get; set; }
+     
+    //Setup Attributes
 
-        // Constructor
+        public int cityId { get; set; }
+        public string city { get; set; }
+        public int countryId { get; set; }
+
+        //Setup Constructors
+
         public City() { }
 
-        public City(int cityId, string name, int countryId)
+        public City(int cityId, string city, int countryId)
         {
-            CityId = cityId;
-            Name = name;
-            CountryId = countryId;
+            this.cityId = cityId;
+            this.city = city;
+            this.countryId = countryId;
         }
 
-        // Method to get new city ID
-        public static int getNewCityID()
+        //Methods to Create a New City
+
+        public static int GetNewCityID()
         {
             int newCityId = 0;
-            using (MySqlCommand cmd = new MySqlCommand("SELECT MAX(cityId) FROM city", DBConnection.connection))
+
+            DBConnection.OpenConnection(); // Open the database connection
+
+            try
             {
-                object result = cmd.ExecuteScalar();
-                if (result != null && result != DBNull.Value)
+                string qry = "SELECT MAX(cityId) AS newCityId FROM city";
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                if (rdr.Read() && !rdr.IsDBNull(0))
                 {
-                    newCityId = Convert.ToInt32(result) + 1;
+                    newCityId = rdr.GetInt32(0) + 1;
                 }
+
+                rdr.Close();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while trying to fetch the new city ID: " + ex.Message);
+            }
+
             return newCityId;
         }
 
-        // Method to create new city
-        public static City addNewCity(string name, int countryId)
+        public static City CreateNewCity(string city, int countryId)
         {
-            int newCityId = getNewCityID();
-            DateTime currentTime = DateTime.UtcNow;
-            string currentUser = LogIn.currentUser.userName;
+            City newCity = new City(GetNewCityID(), city, countryId);
 
-            string query = $"INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
-                           $"VALUES (@cityId, @name, @countryId, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)";
+            string qry = $"INSERT INTO city " +
+                $"VALUES ('{newCity.cityId}', '{newCity.city}', '{newCity.countryId}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
 
-            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection))
-            {
-                cmd.Parameters.AddWithValue("@cityId", newCityId);
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@countryId", countryId);
-                cmd.Parameters.AddWithValue("@createDate", currentTime);
-                cmd.Parameters.AddWithValue("@createdBy", currentUser);
-                cmd.Parameters.AddWithValue("@lastUpdate", currentTime);
-                cmd.Parameters.AddWithValue("@lastUpdateBy", currentUser);
+            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+            cmd.ExecuteNonQuery();
 
-                cmd.ExecuteNonQuery();
-            }
-
-            return new City(newCityId, name, countryId);
+            return newCity;
         }
 
-        // Method to get a city by name and country ID
-        public static City getCity(string name, int countryId)
+        //Method to get data from City table
+
+        public static City GetCity(string city, int countryId)
         {
-            City city = null;
+            City getCity = new City();
 
-            string query = $"SELECT cityId, city, countryId FROM city WHERE city = @name AND countryId = @countryId";
+            DBConnection.OpenConnection(); // Open the database connection
 
-            using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection))
+            try
             {
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@countryId", countryId);
+                string qry = $"SELECT cityId, city, countryId FROM city WHERE city = '{city}' AND countryId = '{countryId}'";
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                MySqlDataReader rdr = cmd.ExecuteReader();
 
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                if (rdr.Read() && !rdr.IsDBNull(0))
                 {
-                    if (reader.Read())
-                    {
-                        city = new City
-                        {
-                            CityId = reader.GetInt32("cityId"),
-                            Name = reader.GetString("city"),
-                            CountryId = reader.GetInt32("countryId")
-                        };
-                    }
+                    getCity.cityId = rdr.GetInt32(0);
+                    getCity.city = rdr.GetString(1);
+                    getCity.countryId = rdr.GetInt32(2);
                 }
-            }
 
-            if (city == null)
+                rdr.Close();
+            }
+            catch (Exception ex)
             {
-                city = addNewCity(name, countryId);
+                MessageBox.Show("An error occurred while trying to fetch city data: " + ex.Message);
             }
 
-            return city;
+            return getCity;
         }
     }
 }

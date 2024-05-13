@@ -23,6 +23,7 @@ namespace C969_Oliver
             textCustIDModCust.Text = customerId.ToString();
             textCustNameModCust.Text = customerName;
             textAddressModCust.Text = address;
+            textBaddress2ModCust.Text = address2;
             textCityModCust.Text = city;
             textCountryModCust.Text = country;
             textZipModCust.Text = zipCode;
@@ -73,14 +74,14 @@ namespace C969_Oliver
             // Check if fields are valid
             if (confirmFields())
             {
-            
+
                 return;
             }
 
             // Retrieve or create country, city, and address
             Country country = Country.getCountry(textCountryModCust.Text);
-            City city = City.getCity(textCityModCust.Text, country.CountryId);
-            Address address = Address.GetAddress(textAddressModCust.Text, city.CityId, textZipModCust.Text, textPhoneModCust.Text);
+            City city = City.GetCity(textCityModCust.Text, country.CountryId);
+            Address address = Address.GetAddress(textAddressModCust.Text, textBaddress2ModCust.Text, city.cityId, textZipModCust.Text, textPhoneModCust.Text);
 
             // Update the customer
             int customerId = Convert.ToInt32(textCustIDModCust.Text);
