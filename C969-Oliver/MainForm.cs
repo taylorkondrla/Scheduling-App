@@ -238,7 +238,7 @@ namespace C969_Oliver
                 }
             }
         }
-
+        //log out
         private void btnLogOut_Click(object sender, EventArgs e)
         {
             this.Close();

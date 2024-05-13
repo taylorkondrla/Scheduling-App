@@ -177,13 +177,23 @@ namespace C969_Oliver
         //Delete  customer
         public static bool DeleteCustomer(int customerId)
         {
-            string qry = $"DELETE FROM appointment WHERE customerId = '{customerId}'";
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                string qry = $"DELETE FROM appointment WHERE customerId = '{customerId}'";
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.connection);
+                cmd.ExecuteNonQuery();
 
-            qry = $"DELETE FROM customer WHERE customerId = '{customerId}'";
-            cmd = new MySqlCommand(qry, DBConnection.connection);
-            cmd.ExecuteNonQuery();
+                qry = $"DELETE FROM customer WHERE customerId = '{customerId}'";
+                cmd = new MySqlCommand(qry, DBConnection.connection);
+                cmd.ExecuteNonQuery();
+
+                return true; // Deletion successful
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to delete customer: {ex.Message}");
+                return false; // Deletion failed
+            }
         }
 
 

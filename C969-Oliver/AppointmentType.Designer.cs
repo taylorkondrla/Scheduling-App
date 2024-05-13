@@ -219,6 +219,7 @@
             this.btnCloseApptType.TabIndex = 14;
             this.btnCloseApptType.Text = "Close";
             this.btnCloseApptType.UseVisualStyleBackColor = false;
+            this.btnCloseApptType.Click += new System.EventHandler(this.btnCloseApptType_Click);
             // 
             // AppointmentType
             // 

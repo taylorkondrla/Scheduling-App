@@ -35,7 +35,7 @@
             this.btnModifyAppt = new System.Windows.Forms.Button();
             this.btnDeleteAppt = new System.Windows.Forms.Button();
             this.mainCustomersLabel = new System.Windows.Forms.Label();
-            this.mainControlsLabel = new System.Windows.Forms.Label();
+            this.mainReportsLabel = new System.Windows.Forms.Label();
             this.mainCustomersDataGrid = new System.Windows.Forms.DataGridView();
             this.btnAddCustomer = new System.Windows.Forms.Button();
             this.btnModifyCustomer = new System.Windows.Forms.Button();
@@ -125,15 +125,15 @@
             this.mainCustomersLabel.TabIndex = 6;
             this.mainCustomersLabel.Text = "Customers";
             // 
-            // mainControlsLabel
+            // mainReportsLabel
             // 
-            this.mainControlsLabel.AutoSize = true;
-            this.mainControlsLabel.Font = new System.Drawing.Font("Microsoft YaHei", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainControlsLabel.Location = new System.Drawing.Point(658, 305);
-            this.mainControlsLabel.Name = "mainControlsLabel";
-            this.mainControlsLabel.Size = new System.Drawing.Size(97, 28);
-            this.mainControlsLabel.TabIndex = 7;
-            this.mainControlsLabel.Text = "Controls";
+            this.mainReportsLabel.AutoSize = true;
+            this.mainReportsLabel.Font = new System.Drawing.Font("Microsoft YaHei", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainReportsLabel.Location = new System.Drawing.Point(658, 305);
+            this.mainReportsLabel.Name = "mainReportsLabel";
+            this.mainReportsLabel.Size = new System.Drawing.Size(90, 28);
+            this.mainReportsLabel.TabIndex = 7;
+            this.mainReportsLabel.Text = "Reports";
             // 
             // mainCustomersDataGrid
             // 
@@ -255,7 +255,7 @@
             this.Controls.Add(this.btnModifyCustomer);
             this.Controls.Add(this.btnAddCustomer);
             this.Controls.Add(this.mainCustomersDataGrid);
-            this.Controls.Add(this.mainControlsLabel);
+            this.Controls.Add(this.mainReportsLabel);
             this.Controls.Add(this.mainCustomersLabel);
             this.Controls.Add(this.btnDeleteAppt);
             this.Controls.Add(this.btnModifyAppt);
@@ -281,7 +281,7 @@
         private System.Windows.Forms.Button btnModifyAppt;
         private System.Windows.Forms.Button btnDeleteAppt;
         private System.Windows.Forms.Label mainCustomersLabel;
-        private System.Windows.Forms.Label mainControlsLabel;
+        private System.Windows.Forms.Label mainReportsLabel;
         private System.Windows.Forms.DataGridView mainCustomersDataGrid;
         private System.Windows.Forms.Button btnAddCustomer;
         private System.Windows.Forms.Button btnModifyCustomer;

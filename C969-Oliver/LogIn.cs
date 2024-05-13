@@ -22,7 +22,7 @@ namespace C969_Oliver
         public LogIn()
         {
             InitializeComponent();
-            if (CultureInfo.CurrentUICulture.LCID == 1034 ) //1034 spanish lcid
+            if (CultureInfo.CurrentUICulture.LCID == 1034 ) //1034 Spanish lcid
             {
                 this.Text = "Acceso";
                 usernameLabel.Text = "Nombre de usuario";

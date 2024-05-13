@@ -13,6 +13,8 @@ namespace C969_Oliver
 {
     public partial class ModifyAppointment : Form
     {
+        //create instance of mainform that will refresh datagrid
+        MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
         public ModifyAppointment(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, DateTime date, DateTime start, DateTime end)
         {
             InitializeComponent();
@@ -111,7 +113,7 @@ namespace C969_Oliver
                     Appointments.CreateAppointment(newAppointment);
 
 
-                    MainForm.RefreshAppointmentData();
+                    mainForm.refreshAppointmentDataGrid();
                     this.Close();
                 }
                 catch (Exception ex)

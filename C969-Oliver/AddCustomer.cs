@@ -81,7 +81,7 @@ namespace C969_Oliver
                     Address address = Address.GetAddress(textAddressAddCust.Text, city.CityId, textZipAddCust.Text, textPhoneAddCust.Text);
                     Customer.AddCustomer(textCustomerNameAddCust.Text, address.addressID, 1);
 
-                    mainForm.RefreshCustomerGrid();
+                    mainForm.refreshCustomerDataGrid();
                     this.Close();
                 }
             }

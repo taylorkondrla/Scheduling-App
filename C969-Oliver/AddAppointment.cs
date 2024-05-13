@@ -21,24 +21,18 @@ namespace C969_Oliver
             //appointment id text box new appointment id
             textApptIDAddAppt.Text = Appointments.NewAppointmentID().ToString();
 
-            //add customer names
-            // Populate text boxes with customer names
+            // Add customer names
             List<Customer> customers = Customer.GetListCustomers();
             StringBuilder customerNames = new StringBuilder();
-            foreach (Customer customer in customers)
-            {
-                customerNames.AppendLine(customer.customerName);
-            }
+            // Lambda expression used here
+            customers.ForEach(customer => customerNames.AppendLine(customer.customerName));
             textCustomerIDAddAppt.Text = customerNames.ToString();
 
-            //add user names
-            // Populate text boxes with user names
+            // Add user names
             List<User> users = User.GetUserList();
             StringBuilder userNames = new StringBuilder();
-            foreach (User user in users)
-            {
-                userNames.AppendLine(user.userName);
-            }
+            // Lambda expression used here 
+            users.ForEach(user => userNames.AppendLine(user.userName));
             textUserIDAddAppt.Text = userNames.ToString();
         }
 
@@ -124,7 +118,7 @@ namespace C969_Oliver
                     Appointments.CreateAppointment(newAppointment);
 
                     
-                    MainForm.RefreshAppointmentData();
+                    mainForm.refreshAppointmentDataGrid();
                     this.Close();
                 }
                 catch (Exception ex)

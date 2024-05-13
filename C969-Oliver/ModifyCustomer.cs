@@ -88,12 +88,12 @@ namespace C969_Oliver
             Customer.ModifyCustomer(customerId, customerName, address.addressID, 1);
 
             // Refresh the customer grid in the main form
-            MainForm.refreshCustomerGrid();
+            mainForm.refreshCustomerDataGrid();
 
             // Close the modify customer form
             this.Close();
         }
-
+        //close
         private void btnCloseModCust_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -76,6 +76,7 @@
             this.btnCloseConsultantReport.TabIndex = 3;
             this.btnCloseConsultantReport.Text = "Close";
             this.btnCloseConsultantReport.UseVisualStyleBackColor = false;
+            this.btnCloseConsultantReport.Click += new System.EventHandler(this.btnCloseConsultantReport_Click);
             // 
             // ConsultantReport
             // 
