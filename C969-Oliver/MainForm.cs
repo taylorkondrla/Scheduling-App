@@ -35,9 +35,8 @@ namespace C969_Oliver
                 TimeSpan timeLeft = start - now;
                 if (timeLeft.TotalMinutes >= 0 && timeLeft.TotalMinutes <= 15)
                 {
-                    string customerName = row.Cells["customerName"].Value.ToString();
                     string startTime = start.ToString();
-                    MessageBox.Show($"Reminder: You have an appointment with {customerName} at {startTime}.");
+                    MessageBox.Show($"Reminder: You have an appointment at {startTime}.");
                 }
             }
         }
