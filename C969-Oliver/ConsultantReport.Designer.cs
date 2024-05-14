@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.consultantReportLabel = new System.Windows.Forms.Label();
-            this.consultantReportDataGrid = new System.Windows.Forms.DataGridView();
-            this.consultantDropDown = new System.Windows.Forms.ComboBox();
             this.btnCloseConsultantReport = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.consultantReportDataGrid)).BeginInit();
+            this.userReportDataGrid = new System.Windows.Forms.DataGridView();
+            this.comboConsultant = new System.Windows.Forms.ComboBox();
+            ((System.ComponentModel.ISupportInitialize)(this.userReportDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // consultantReportLabel
@@ -46,26 +46,6 @@
             this.consultantReportLabel.TabIndex = 0;
             this.consultantReportLabel.Text = "Consultant Report";
             // 
-            // consultantReportDataGrid
-            // 
-            this.consultantReportDataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.consultantReportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.consultantReportDataGrid.Location = new System.Drawing.Point(31, 67);
-            this.consultantReportDataGrid.Name = "consultantReportDataGrid";
-            this.consultantReportDataGrid.Size = new System.Drawing.Size(775, 250);
-            this.consultantReportDataGrid.TabIndex = 1;
-            // 
-            // consultantDropDown
-            // 
-            this.consultantDropDown.AllowDrop = true;
-            this.consultantDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.consultantDropDown.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.consultantDropDown.FormattingEnabled = true;
-            this.consultantDropDown.Location = new System.Drawing.Point(274, 338);
-            this.consultantDropDown.Name = "consultantDropDown";
-            this.consultantDropDown.Size = new System.Drawing.Size(256, 27);
-            this.consultantDropDown.TabIndex = 2;
-            // 
             // btnCloseConsultantReport
             // 
             this.btnCloseConsultantReport.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -78,19 +58,36 @@
             this.btnCloseConsultantReport.UseVisualStyleBackColor = false;
             this.btnCloseConsultantReport.Click += new System.EventHandler(this.btnCloseConsultantReport_Click);
             // 
+            // userReportDataGrid
+            // 
+            this.userReportDataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.userReportDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.userReportDataGrid.Location = new System.Drawing.Point(12, 77);
+            this.userReportDataGrid.Name = "userReportDataGrid";
+            this.userReportDataGrid.Size = new System.Drawing.Size(793, 216);
+            this.userReportDataGrid.TabIndex = 4;
+            // 
+            // comboConsultant
+            // 
+            this.comboConsultant.FormattingEnabled = true;
+            this.comboConsultant.Location = new System.Drawing.Point(272, 349);
+            this.comboConsultant.Name = "comboConsultant";
+            this.comboConsultant.Size = new System.Drawing.Size(257, 21);
+            this.comboConsultant.TabIndex = 5;
+            // 
             // ConsultantReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(828, 409);
+            this.Controls.Add(this.comboConsultant);
+            this.Controls.Add(this.userReportDataGrid);
             this.Controls.Add(this.btnCloseConsultantReport);
-            this.Controls.Add(this.consultantDropDown);
-            this.Controls.Add(this.consultantReportDataGrid);
             this.Controls.Add(this.consultantReportLabel);
             this.Name = "ConsultantReport";
             this.Text = "ConsultantReport";
-            ((System.ComponentModel.ISupportInitialize)(this.consultantReportDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userReportDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,8 +96,8 @@
         #endregion
 
         private System.Windows.Forms.Label consultantReportLabel;
-        private System.Windows.Forms.ComboBox consultantDropDown;
         private System.Windows.Forms.Button btnCloseConsultantReport;
-        private System.Windows.Forms.DataGridView consultantReportDataGrid;
+        private System.Windows.Forms.DataGridView userReportDataGrid;
+        private System.Windows.Forms.ComboBox comboConsultant;
     }
 }

@@ -17,32 +17,49 @@ namespace C969_Oliver
         {
             InitializeComponent();
             PopulateConsultantsDropDown();
+            comboConsultant.SelectedIndexChanged += comboConsultant_SelectedIndexChanged;
+
         }
 
         private void PopulateConsultantsDropDown()
         {
             DataTable consultants = DataManager.GetConsultants();
 
-            consultantDropDown.Items.Clear();
-            foreach (DataRow row in consultants.Rows)
+            if (consultants != null && consultants.Rows.Count > 0)
             {
-                consultantDropDown.Items.Add(row["userName"].ToString());
+                foreach (DataRow row in consultants.Rows)
+                {
+                    comboConsultant.Items.Add(new KeyValuePair<int, string>((int)row["userId"], row["userName"].ToString()));
+                }
+            }
+            else
+            {
+                MessageBox.Show("No consultants found. Please add consultants.");
             }
         }
 
-        private void consultantDropDown_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboConsultant_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadAppointmentsForConsultant();
         }
 
         private void LoadAppointmentsForConsultant()
         {
-            string selectedConsultant = consultantDropDown.SelectedItem?.ToString();
-
-            if (!string.IsNullOrEmpty(selectedConsultant))
+            if (comboConsultant.SelectedItem != null)
             {
-                DataTable appointments = DataManager.GetAppointmentsForConsultant(selectedConsultant);
-                consultantReportDataGrid.DataSource = appointments;
+                KeyValuePair<int, string> selectedConsultant = (KeyValuePair<int, string>)comboConsultant.SelectedItem;
+                int userId = selectedConsultant.Key;
+
+                DataTable appointments = DataManager.GetAppointmentsForConsultant(userId);
+
+                if (appointments != null && appointments.Rows.Count > 0)
+                {
+                    userReportDataGrid.DataSource = appointments;
+                }
+                else
+                {
+                    MessageBox.Show("No appointments found for the selected consultant.");
+                }
             }
             else
             {
@@ -50,12 +67,14 @@ namespace C969_Oliver
             }
         }
 
-        //close
+        // Close button event handler
         private void btnCloseConsultantReport_Click(object sender, EventArgs e)
         {
             this.Close();
         }
     }
 }
+
+
 
 

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace C969_Oliver
 {
+
     // Connect to database
     public static class DBConnection
     {

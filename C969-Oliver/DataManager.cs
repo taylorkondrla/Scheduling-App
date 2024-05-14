@@ -162,7 +162,7 @@ namespace C969_Oliver
         public static DataTable GetConsultants()
         {
             DataTable dataTable = new DataTable();
-            string query = "SELECT userName FROM User";
+            string query = "SELECT userId, userName FROM User";
 
             try
             {
@@ -186,10 +186,10 @@ namespace C969_Oliver
             return dataTable;
         }
 
-        public static DataTable GetAppointmentsForConsultant(string userName)
+        public static DataTable GetAppointmentsForConsultant(int userId)
         {
             DataTable dataTable = new DataTable();
-            string query = "SELECT * FROM Appointment WHERE userName = @userName";
+            string query = "SELECT * FROM Appointment WHERE userId = @userId";
 
             try
             {
@@ -197,9 +197,8 @@ namespace C969_Oliver
                 {
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@userName", userName);
+                        command.Parameters.AddWithValue("@userId", userId);
                         connection.Open();
-                        Console.WriteLine("Executing SQL query: " + query); // Debug statement
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
                             adapter.Fill(dataTable);
