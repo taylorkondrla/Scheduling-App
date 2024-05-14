@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,19 +90,35 @@ namespace C969_Oliver
         }
         //get user by name
         public static User GetUserByName(string userName)
-        { 
+        {
             User user = new User();
-            string query = $"SELECT userID, userName FROM user WHERE userName = '{userName}'";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+            try
             {
-                user.userId = Convert.ToInt32(reader["userId"]);
-                user.userName= reader["username"].ToString();
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $"SELECT userID, userName FROM user WHERE userName = '{userName}'";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                user.userId = Convert.ToInt32(reader["userId"]);
+                                user.userName = reader["userName"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            
             }
 
-            reader.Close();
             return user;
         }
     }

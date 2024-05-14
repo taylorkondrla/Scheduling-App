@@ -25,7 +25,6 @@ namespace C969_Oliver
         public string type { get; set; }
         public string contact { get; set; } 
         public string url { get; set; }
-        public DateTime createDate { get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
 
@@ -37,7 +36,7 @@ namespace C969_Oliver
 
         public Appointments() { }
 
-        public Appointments(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, string url, DateTime createDate, DateTime start, DateTime end)
+        public Appointments(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, string url, DateTime start, DateTime end)
         {
             this.appointmentId = appointmentId;
             this.userId = userId;
@@ -48,7 +47,7 @@ namespace C969_Oliver
             this.type = type;
             this.contact = contact;
             this.url = url;
-            this.createDate = createDate;
+
             this.start = start;
             this.end = end;
         }
@@ -191,23 +190,18 @@ namespace C969_Oliver
         //Confirm no conflict
         public static bool ConfirmNoConflict(Appointments appointments)
         {
-            string qry = $"SELECT * FROM appointment WHERE userId = '{appointments.userId}' and ((start >= '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}' and start <= '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}') or (end >= '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}' and end <= '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}'))";
+            string qry = $"SELECT * FROM appointment WHERE userId = '{appointments.userId}' " +
+                     $"AND appointmentId != '{appointments.appointmentId}' " +
+                     $"AND ((start >= '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}' AND start <= '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}') " +
+                     $"OR (end >= '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}' AND end <= '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}'))";
 
             MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
-            reader.Read();
+            bool hasConflict = reader.HasRows;
+            reader.Close();
 
-            if (reader.HasRows)
-            {
-                reader.Close();
-                return false;
-            }
-            else
-            {
-                reader.Close();
-                return true;
-            }
+            return !hasConflict;
         }
 
 
@@ -309,7 +303,7 @@ namespace C969_Oliver
             List<int> customerIds = new List<int>();
 
             // Construct SQL query to select distinct customer IDs
-            string query = "SELECT DISTINCT customerId FROM appointment";
+            string query = "SELECT DISTINCT customerId FROM customer";
 
             // Execute the query
             using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))

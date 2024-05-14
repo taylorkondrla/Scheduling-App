@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace C969_Oliver
 {
@@ -43,15 +44,34 @@ namespace C969_Oliver
         public static int GetNewCustomerID()
         {
             int newID = 0;
-            string queryString = "SELECT MAX(customerId) AS 'newId' FROM customer";
-            MySqlCommand cmd = new MySqlCommand(queryString, DBConnection.Connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+
+            try
             {
-                newID = Convert.ToInt32(reader[0]);
-                newID += 1;
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
+                {
+                    connection.Open();
+
+                    string queryString = "SELECT MAX(customerId) AS 'newId' FROM customer";
+
+                    using (MySqlCommand cmd = new MySqlCommand(queryString, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                newID = Convert.ToInt32(reader["newId"]);
+                                newID += 1;
+                            }
+                        }
+                    }
+                }
             }
-            reader.Close();
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately (log, display error message, etc.)
+                MessageBox.Show("An error occurred while fetching a new customer ID: " + ex.Message);
+            }
+
             return newID;
         }
 
@@ -91,25 +111,43 @@ namespace C969_Oliver
             return customer;
         }
 
-        //Geta customer by ID
+        //Gets customer by ID
         public static Customer GetCustomerById(int customerId)
         {
             Customer customer = new Customer();
-            string qry = $"SELECT customerId, customerName, addressId, active FROM customer WHERE customerId = '{customerId}'";
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+            try
             {
-                if (reader.HasRows)
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
                 {
-                    customer.customerId = Convert.ToInt32(reader["customerId"]);
-                    customer.customerName = reader["customerName"].ToString();
-                    customer.addressId = Convert.ToInt32(reader["addressId"]);
-                    customer.active = Convert.ToInt32(reader["active"]);
+                    connection.Open();
+
+                    string qry = $"SELECT customerId, customerName, addressId, active FROM customer WHERE customerId = '{customerId}'";
+
+                    using (MySqlCommand cmd = new MySqlCommand(qry, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    customer.customerId = Convert.ToInt32(reader["customerId"]);
+                                    customer.customerName = reader["customerName"].ToString();
+                                    customer.addressId = Convert.ToInt32(reader["addressId"]);
+                                    customer.active = Convert.ToInt32(reader["active"]);
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            reader.Close();
+            catch (Exception ex)
+            {
+                // Handle the exception 
+                MessageBox.Show("An error occurred while fetching customer data: " + ex.Message);
+            }
+
             return customer;
         }
 
@@ -176,19 +214,34 @@ namespace C969_Oliver
         {
             string timestamp = DataManager.createTimeStamp();
 
-            // Fetch the lastUpdateBy value from the database
-            string uname = User.GetUserByName(customerName).userName;
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
+                {
+                    connection.Open();
 
-            string qry = $"UPDATE customer " +
-                         $"SET customerName = '{customerName}', " +
-                         $"addressId = '{addressId}', " +
-                         $"active = '{active}', " +
-                         $"lastUpdate = '{timestamp}', " +
-                         $"lastUpdateBy = '{uname}' " + //uname is declared and assigned
-                         $"WHERE customerId = '{customerId}'";
+                    // Fetch the lastUpdateBy value from the database
+                    string uname = User.GetUserByName(customerName).userName;
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            cmd.ExecuteNonQuery();
+                    string qry = $"UPDATE customer " +
+                                 $"SET customerName = '{customerName}', " +
+                                 $"addressId = '{addressId}', " +
+                                 $"active = '{active}', " +
+                                 $"lastUpdate = '{timestamp}', " +
+                                 $"lastUpdateBy = '{uname}' " + // uname is declared and assigned
+                                 $"WHERE customerId = '{customerId}'";
+
+                    using (MySqlCommand cmd = new MySqlCommand(qry, connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately (log, display error message, etc.)
+                MessageBox.Show("An error occurred while modifying customer: " + ex.Message);
+            }
         }
 
         //Delete  customer

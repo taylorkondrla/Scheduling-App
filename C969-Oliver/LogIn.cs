@@ -16,6 +16,14 @@ namespace C969_Oliver
 {
     public partial class LogIn : Form
     {
+        private MainForm mainForm; // Store reference to MainForm
+
+        public LogIn(MainForm mainForm)
+        {
+            InitializeComponent();
+            this.mainForm = mainForm; // Store reference to MainForm
+                                      // Your existing initialization code
+        }
         private static DataManager dataManager = new DataManager(); // Create an instance of DataManager
         public static User currentUser;
         public string message = "The username and password did not match.";
@@ -85,10 +93,13 @@ namespace C969_Oliver
             if (FindUser(textUserName.Text, textPassword.Text) == 1)
             {
                 this.Hide();
-                MainForm MainForm = new MainForm();
-                MainForm.LogInForm = this;
+                MainForm mainForm = new MainForm();
+                mainForm.LogInForm = this;
                 UserActivity.UserLogInToLog(textUserName.Text);
-                MainForm.Show();
+                mainForm.Show();
+
+                // Trigger appointment reminder in the MainForm
+                mainForm.AppointmentReminder(); // No need to pass any arguments
             }
             else
             {

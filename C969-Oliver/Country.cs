@@ -82,7 +82,7 @@ namespace C969_Oliver
         }
 
         // Method to get a country by name
-        public static Country getCountry(string countryName)
+        public static Country GetCountry(string countryName)
         {
             Country country = null;
 
@@ -101,7 +101,7 @@ namespace C969_Oliver
 
                     using (MySqlDataReader rdr = cmd.ExecuteReader())
                     {
-                        while (rdr.Read())
+                        if (rdr.Read())
                         {
                             country = new Country
                             {

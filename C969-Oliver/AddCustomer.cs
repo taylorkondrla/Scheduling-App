@@ -68,17 +68,30 @@ namespace C969_Oliver
             {
                 bool customerFound = Customer.ConfirmCustomer(textCustomerNameAddCust.Text);
 
-                //if customer is not found add new customer
                 if (!customerFound)
                 {
-                    //If customer does not exist, get or create country, city, address and create a new customer
-                    Country country = Country.getCountry(textCountryAddCust.Text);
+                    Country country = Country.GetCountry(textCountryAddCust.Text);
                     City city = City.GetCity(textCityAddCust.Text, country.CountryId);
-                    Address address = Address.GetAddress(textAddressAddCust.Text, textAddress2AddCust.Text, city.cityId, textZipAddCust.Text, textPhoneAddCust.Text);
-                    Customer.AddCustomer(textCustomerNameAddCust.Text, address.addressID, 1);
 
-                    mainForm.refreshCustomerDataGrid();
-                    this.Close();
+                    if (city == null)
+                    {
+                        // If the city doesn't exist, create a new city
+                        city = City.CreateNewCity(textCityAddCust.Text, country.CountryId);
+                    }
+
+                    // Now, city should not be null
+                    if (city != null)
+                    {
+                        Address address = Address.CreateNewAddress(textAddressAddCust.Text, textAddress2AddCust.Text, city.cityId, textZipAddCust.Text, textPhoneAddCust.Text);
+                        Customer.AddCustomer(textCustomerNameAddCust.Text, address.addressID, 1);
+                        mainForm.refreshCustomerDataGrid();
+                        this.Close();
+                    }
+                    else
+                    {
+                        // Handle case where city creation failed
+                        MessageBox.Show("Failed to create the city.");
+                    }
                 }
             }
         }

@@ -24,7 +24,7 @@ namespace C969_Oliver
                 SELECT c.CustomerID, COUNT(a.AppointmentID) AS AppointmentCount
                 FROM Customer c
                 LEFT JOIN Appointment a ON c.CustomerID = a.CustomerID
-                WHERE MONTH(a.createDate) = @Month
+                WHERE MONTH(a.start) = @Month
                 GROUP BY c.CustomerID";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))

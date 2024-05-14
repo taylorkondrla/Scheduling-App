@@ -15,7 +15,7 @@ namespace C969_Oliver
     {
         //create instance of mainform that will refresh datagrid
         MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
-        public ModifyAppointment(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, string url, DateTime createDate, DateTime start, DateTime end)
+        public ModifyAppointment(int appointmentId, int userId, int customerId, string title, string description, string location, string type, string contact, string url, DateTime start, DateTime end)
         {
             InitializeComponent();
 
@@ -34,7 +34,6 @@ namespace C969_Oliver
             textTypeModAppt.Text = type;
             textContactModAppt.Text = contact;
             textURLModAppt.Text = url;
-            dateModAppt.Value = createDate;
             startTimeModAppt.Value = start;
             endTimeModAppt.Value = end;
 
@@ -88,8 +87,10 @@ namespace C969_Oliver
                     return;
                 }
 
-                Customer customer = Customer.GetCustomerByName(textCustomerIDModAppt.Text);
-                User user = User.GetUserByName(textUserIDModAppt.Text);
+                // Directly use the customerId and userId passed to the constructor
+                Customer customer = Customer.GetCustomerById(int.Parse(textCustomerIDModAppt.Text));
+                User user = User.GetUserByID(int.Parse(textUserIDModAppt.Text));
+
                 Appointments newAppointment = new Appointments(
                     Convert.ToInt32(textApptIDModAppt.Text),
                     customer.customerId,
@@ -100,7 +101,6 @@ namespace C969_Oliver
                     textTypeModAppt.Text,
                     textContactModAppt.Text,
                     textURLModAppt.Text,
-                    dateModAppt.Value,
                     startTimeModAppt.Value,
                     endTimeModAppt.Value
                 );
@@ -117,8 +117,7 @@ namespace C969_Oliver
                         throw new Exception("Oops! Appointment times conflict another appointment for this user.");
                     }
 
-                    Appointments.CreateAppointment(newAppointment);
-
+                    Appointments.UpdateAppointment(newAppointment);
 
                     mainForm.refreshAppointmentDataGrid();
                     this.Close();

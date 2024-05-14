@@ -79,7 +79,7 @@ namespace C969_Oliver
             }
 
             // Retrieve or create country, city, and address
-            Country country = Country.getCountry(textCountryModCust.Text);
+            Country country = Country.GetCountry(textCountryModCust.Text);
             City city = City.GetCity(textCityModCust.Text, country.CountryId);
             Address address = Address.GetAddress(textAddressModCust.Text, textBaddress2ModCust.Text, city.cityId, textZipModCust.Text, textPhoneModCust.Text);
 

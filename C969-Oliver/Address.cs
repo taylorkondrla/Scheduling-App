@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
@@ -37,64 +38,119 @@ namespace C969_Oliver
         public static int NewAddressId()
         {
             int newAddressID = 0;
-            string query = "SELECT MAX(addressId) AS 'newAddressID' FROM address";
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+            try
             {
-                newAddressID = Convert.ToInt32(reader["newAddressID"]) + 1;
+                // Ensure the database connection is open
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT MAX(addressId) AS 'newAddressID' FROM address";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                newAddressID = reader.IsDBNull(0) ? 1 : Convert.ToInt32(reader["newAddressID"]) + 1;
+                            }
+                        }
+                    }
+                }
             }
-            reader.Close();
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately (log, display error message, etc.)
+                MessageBox.Show("An error occurred while fetching the new address ID: " + ex.Message);
+            }
+
             return newAddressID;
         }
+
+        //get address
         public static Address GetAddress(string address, string address2, int cityId, string postalCode, string phone)
         {
             Address getAddress = new Address();
-            string query = $"SELECT addressId, address, cityId, postalCode, phone " +
-                $"FROM address " +
-                $"WHERE address = '{address}' " +
-                $"and address2 = '{address2}' " +
-                $"and cityId = '{cityId}' " +
-                $"and postalCode = '{postalCode}' " +
-                $"and phone = '{phone}' ";
 
-            MySqlCommand cmd = new MySqlCommand(query, DBConnection.connection);
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
+            try
             {
-                if (reader.HasRows)
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
                 {
-                    getAddress.addressID = Convert.ToInt32(reader["addressId"]);
-                    getAddress.address = reader["address"].ToString();
-                    getAddress.address2 = reader["address2"].ToString();
-                    getAddress.cityId = Convert.ToInt32(reader["cityId"]);
-                    getAddress.postalCode = reader["postalCode"].ToString();
-                    getAddress.phone = reader["phone"].ToString();
+                    connection.Open();
+
+                    string query = $"SELECT addressId, address, cityId, postalCode, phone " +
+                                   $"FROM address " +
+                                   $"WHERE address = '{address}' " +
+                                   $"and address2 = '{address2}' " +
+                                   $"and cityId = '{cityId}' " +
+                                   $"and postalCode = '{postalCode}' " +
+                                   $"and phone = '{phone}' ";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    getAddress.addressID = Convert.ToInt32(reader["addressId"]);
+                                    getAddress.address = reader["address"].ToString();
+                                    getAddress.address2 = reader["address2"].ToString();
+                                    getAddress.cityId = Convert.ToInt32(reader["cityId"]);
+                                    getAddress.postalCode = reader["postalCode"].ToString();
+                                    getAddress.phone = reader["phone"].ToString();
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            reader.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while trying to fetch address data: " + ex.Message);
+            }
 
             if (getAddress.addressID == 0)
             {
                 getAddress = CreateNewAddress(address, address2, cityId, postalCode, phone);
             }
+
             return getAddress;
 
         }
+
         //create a new address
         public static Address CreateNewAddress(string address, string address2, int cityId, string postalCode, string phone)
         {
-            Address newAddress = new Address(NewAddressId(), address, address2, cityId, postalCode, phone);
+            try
+            {
+                // Ensure the database connection is open
+                using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
+                {
+                    connection.Open();
 
-            string qry = "INSERT INTO address " +
-                $"VALUES ('{newAddress.addressID}', '{newAddress.address}', '{newAddress.address2}', '{newAddress.cityId}', '{newAddress.postalCode}', '{newAddress.phone}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
+                    Address newAddress = new Address(NewAddressId(), address, address2, cityId, postalCode, phone);
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            cmd.ExecuteNonQuery();
+                    string qry = "INSERT INTO address " +
+                        $"VALUES ('{newAddress.addressID}', '{newAddress.address}', '{newAddress.address2}', '{newAddress.cityId}', '{newAddress.postalCode}', '{newAddress.phone}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
 
-            return newAddress;
+                    using (MySqlCommand cmd = new MySqlCommand(qry, connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return newAddress;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception appropriately (log, display error message, etc.)
+                MessageBox.Show("An error occurred while creating a new address: " + ex.Message);
+                return null;
+            }
         }
     }
 }

@@ -123,7 +123,6 @@ namespace C969_Oliver
                     textTypeAddAppt.Text,
                     textContactAddAppt.Text,
                     textURLAddAppt.Text,
-                    dateAddAppt.Value,
                     startTimeAddAppt.Value,
                     endTimeAddAppt.Value
                 );

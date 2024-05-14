@@ -72,33 +72,51 @@ namespace C969_Oliver
 
         //Method to get data from City table
 
-        public static City GetCity(string city, int countryId)
+        public static City GetCity(string cityName, int countryId)
         {
-            City getCity = new City();
-
-            DBConnection.OpenConnection(); // Open the database connection
+            City city = null;
 
             try
             {
-                string qry = $"SELECT cityId, city, countryId FROM city WHERE city = '{city}' AND countryId = '{countryId}'";
-                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-                MySqlDataReader rdr = cmd.ExecuteReader();
+                // Ensure the database connection is opened before executing the query
+                DBConnection.OpenConnection();
 
-                if (rdr.Read() && !rdr.IsDBNull(0))
+                // Query to retrieve city by name and countryId
+                string query = $"SELECT cityId, city, countryId FROM city WHERE city = @cityName AND countryId = @countryId";
+
+                // Execute the query
+                using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
                 {
-                    getCity.cityId = rdr.GetInt32(0);
-                    getCity.city = rdr.GetString(1);
-                    getCity.countryId = rdr.GetInt32(2);
-                }
+                    cmd.Parameters.AddWithValue("@cityName", cityName);
+                    cmd.Parameters.AddWithValue("@countryId", countryId);
 
-                rdr.Close();
+                    using (MySqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            city = new City
+                            {
+                                cityId = Convert.ToInt32(rdr["cityId"]),
+                                city = rdr["city"].ToString(),
+                                countryId = Convert.ToInt32(rdr["countryId"])
+                            };
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
+                // Handle exceptions appropriately (e.g., log or display error message)
                 MessageBox.Show("An error occurred while trying to fetch city data: " + ex.Message);
             }
+            finally
+            {
+                // Always ensure the connection is properly closed after use
+                DBConnection.CloseConnection();
+            }
 
-            return getCity;
+            return city;
         }
+
     }
 }

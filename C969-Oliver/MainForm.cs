@@ -14,6 +14,7 @@ namespace C969_Oliver
     public partial class MainForm : Form
     {
         public LogIn LogInForm;
+
         public MainForm()
         {
             InitializeComponent();
@@ -23,8 +24,9 @@ namespace C969_Oliver
             refreshCustomerDataGrid();
 
         }
+
         //reminder appointment within 15 minutes
-        public static void appointmentReminder(DataGridView mainApptDataGrid)
+        public void AppointmentReminder()
         {
             foreach (DataGridViewRow row in mainApptDataGrid.Rows)
             {
@@ -79,12 +81,12 @@ namespace C969_Oliver
                 string type = selectedRow.Cells["type"].Value.ToString();
                 string contact = selectedRow.Cells["contact"].Value.ToString();
                 string url = selectedRow.Cells["url"].Value.ToString();
-                DateTime createDate = Convert.ToDateTime(selectedRow.Cells["createDate"].Value);
+                
                 DateTime start = Convert.ToDateTime(selectedRow.Cells["start"].Value);
                 DateTime end = Convert.ToDateTime(selectedRow.Cells["end"].Value);
 
                 // Show the ModifyAppointment form and pass the retrieved values directly to its constructor
-                new ModifyAppointment(appointmentId, userId, customerId, title, description, location, type, contact, url, createDate, start, end).ShowDialog();
+                new ModifyAppointment(appointmentId, userId, customerId, title, description, location, type, contact, url, start, end).ShowDialog();
             }
             else
             {
