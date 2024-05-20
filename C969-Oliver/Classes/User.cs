@@ -82,8 +82,8 @@ namespace C969_Oliver
 
             while (reader.Read())
             {
-                user.userId= Convert.ToInt32(reader["userId"]);
-                user.userName= reader["username"].ToString();
+                user.userId = Convert.ToInt32(reader["userId"]);
+                user.userName = reader["username"].ToString();
             }
             reader.Close();
             return user;
