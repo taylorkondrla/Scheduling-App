@@ -94,6 +94,7 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
+                //exception handling
                 MessageBox.Show($"An error occurred while adding a new customer: {ex.Message}");
             }
             finally
@@ -158,6 +159,7 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
+                //exception handling
                 MessageBox.Show("An error occurred while fetching customer data: " + ex.Message);
             }
 
@@ -250,6 +252,7 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
+                //exception handling
                 MessageBox.Show("An error occurred while modifying customer: " + ex.Message);
             }
         }
@@ -279,12 +282,13 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
+                //exception handling
                 MessageBox.Show($"Failed to delete customer: {ex.Message}");
-                return false; // Deletion failed
+                return false; 
             }
             finally
             {
-                // Make sure to close the connection in case of an exception
+           
                 DBConnection.CloseConnection();
             }
         }

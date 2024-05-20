@@ -149,7 +149,7 @@ namespace C969_Oliver
                 {
                     if (!Appointments.ConfirmBusinessHours(newAppointment))
                     {
-                        throw new Exception("Oops! Appointment is scheduled outside of business hours 8 AM to 6 PM.");
+                        throw new Exception("Oops! Appointment is scheduled outside of business hours 9 AM to 5 PM.");
                     }
 
                     if (!Appointments.ConfirmNoConflict(newAppointment))

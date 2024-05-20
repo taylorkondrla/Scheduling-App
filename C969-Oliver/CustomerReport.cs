@@ -21,27 +21,35 @@ namespace C969_Oliver
 
         private void LoadMonths()
         {
-            // Add event handlers for radio buttons
-            rdbtnJanCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnFebCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnMarCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnAprCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnMayCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnJunCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnJulCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnAugCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnSepCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnOctCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnNovCR.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnDecCR.CheckedChanged += RadioButton_CheckedChanged;
+            // Add event handlers for radio buttons using lambda expressions
+            AddRadioButtonHandler(rdbtnJanCR);
+            AddRadioButtonHandler(rdbtnFebCR);
+            AddRadioButtonHandler(rdbtnMarCR);
+            AddRadioButtonHandler(rdbtnAprCR);
+            AddRadioButtonHandler(rdbtnMayCR);
+            AddRadioButtonHandler(rdbtnJunCR);
+            AddRadioButtonHandler(rdbtnJulCR);
+            AddRadioButtonHandler(rdbtnAugCR);
+            AddRadioButtonHandler(rdbtnSepCR);
+            AddRadioButtonHandler(rdbtnOctCR);
+            AddRadioButtonHandler(rdbtnNovCR);
+            AddRadioButtonHandler(rdbtnDecCR);
         }
 
-        private void RadioButton_CheckedChanged(object sender, EventArgs e)
+        // Lambda expression to handle RadioButton CheckedChanged event
+        private void AddRadioButtonHandler(RadioButton radioButton)
+        {
+            radioButton.CheckedChanged += (sender, e) =>
+            {
+                RadioButton_CheckedChanged(sender, e, radioButton.Tag.ToString());
+            };
+        }
+
+        private void RadioButton_CheckedChanged(object sender, EventArgs e, string month)
         {
             RadioButton radioButton = sender as RadioButton;
             if (radioButton.Checked)
             {
-                string month = radioButton.Tag.ToString(); // Use Tag property to store month name
                 PopulateCustomerReportDataGrid(month);
             }
         }
@@ -52,10 +60,9 @@ namespace C969_Oliver
             customerReportDataGrid.DataSource = dataTable;
         }
 
-
         private void btnCloseCustomerReport_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-    }   
+    }
 }

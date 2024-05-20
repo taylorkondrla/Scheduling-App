@@ -21,6 +21,7 @@ namespace C969_Oliver
             InitializeComponent();
             textCustomerIDAddCust.Text = Customer.GetNewCustomerID().ToString();
             textCustomerIDAddCust.ReadOnly = true;
+            textPhoneAddCust.KeyPress += textPhoneAddCust_KeyPress;
         }
 
         // Confirm all fields are not blank
@@ -96,7 +97,15 @@ namespace C969_Oliver
                 }
             }
         }
-
+        private void textPhoneAddCust_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow digits (0-9), backspace, and dashes (-)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != '-')
+            {
+                e.Handled = true; // Ignore the character
+                MessageBox.Show("Only digits and dashes are allowed in the phone number.");
+            }
+        }
         private void btnCloseAddCust_Click(object sender, EventArgs e)
         {
             this.Close();

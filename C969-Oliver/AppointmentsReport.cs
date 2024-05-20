@@ -21,9 +21,10 @@ namespace C969_Oliver
 
         private void LoadEventHandlers()
         {
-            rdbtnWeekly.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnMonthly.CheckedChanged += RadioButton_CheckedChanged;
-            rdbtnAllAppts.CheckedChanged += RadioButton_CheckedChanged;
+            //lambda functions for clarity, readability and conciseness
+            rdbtnWeekly.CheckedChanged += (sender, e) => PopulateAppointmentsGrid(DataManager.GetWeeklyAppointments());
+            rdbtnMonthly.CheckedChanged += (sender, e) => PopulateAppointmentsGrid(DataManager.GetMonthlyAppointments());
+            rdbtnAllAppts.CheckedChanged += (sender, e) => PopulateAppointmentsGrid(DataManager.GetAllAppointments());
         }
 
         private void RadioButton_CheckedChanged(object sender, EventArgs e)

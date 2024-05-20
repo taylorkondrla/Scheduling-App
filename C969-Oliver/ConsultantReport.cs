@@ -17,8 +17,8 @@ namespace C969_Oliver
         {
             InitializeComponent();
             PopulateConsultantsDropDown();
-            comboConsultant.SelectedIndexChanged += comboConsultant_SelectedIndexChanged;
-
+            // Add lambda expression to handle SelectedIndexChanged event
+            comboConsultant.SelectedIndexChanged += (sender, e) => LoadAppointmentsForConsultant();
         }
 
         private void PopulateConsultantsDropDown()
@@ -38,10 +38,6 @@ namespace C969_Oliver
             }
         }
 
-        private void comboConsultant_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadAppointmentsForConsultant();
-        }
 
         private void LoadAppointmentsForConsultant()
         {

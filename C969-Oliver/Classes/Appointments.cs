@@ -105,49 +105,71 @@ namespace C969_Oliver
         //create appointment
         public static void CreateAppointment(Appointments appointments)
         {
-            string qry = $"INSERT INTO appointment " +
-                $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointments.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.url}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}')";
+            try
+            {
+                string qry = $"INSERT INTO appointment " +
+                    $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointments.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.url}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}')";
 
-
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            cmd.ExecuteNonQuery();
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+               //exception handling
+                MessageBox.Show($"Error occurred while creating appointment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         //delete Appointment
 
         public static bool DeleteAppointment(int appointmentId)
         {
-            string qry = $"DELETE FROM appointment WHERE appointmentId = '{appointmentId}'";
+            try
+            {
+                string qry = $"DELETE FROM appointment WHERE appointmentId = '{appointmentId}'";
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                int rowsAffected = cmd.ExecuteNonQuery();
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            int rowsAffected = cmd.ExecuteNonQuery();
-
-            
-            return rowsAffected > 0;
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                //exception handling
+                MessageBox.Show($"Error occurred while deleting appointment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
         //Method to Update Appointment
         public static void UpdateAppointment(Appointments appointments)
         {
-            string qry =
-                $"UPDATE appointment " +
-                $"SET " +
-                $"customerId = '{appointments.userId}', " +
-                $"userId = '{appointments.customerId}', " +
-                $"title = '{appointments.title}', " +
-                $"description = '{appointments.description}', " +
-                $"location = '{appointments.location}', " +
-                $"contact = '{appointments.type}', " +
-                $"type = '{appointments.contact}', " +
-                $"url = '{appointments.url}', " +
-                $"start = '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
-                $"end = '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
-                $"lastUpdate = '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
-                $"lastUpdateBy = '{LogIn.currentUser.userName}' " +
-                $"WHERE appointmentId = '{appointments.appointmentId}'";
+            try
+            {
+                string qry =
+                    $"UPDATE appointment " +
+                    $"SET " +
+                    $"customerId = '{appointments.userId}', " +
+                    $"userId = '{appointments.customerId}', " +
+                    $"title = '{appointments.title}', " +
+                    $"description = '{appointments.description}', " +
+                    $"location = '{appointments.location}', " +
+                    $"contact = '{appointments.type}', " +
+                    $"type = '{appointments.contact}', " +
+                    $"url = '{appointments.url}', " +
+                    $"start = '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                    $"end = '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                    $"lastUpdate = '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                    $"lastUpdateBy = '{LogIn.currentUser.userName}' " +
+                    $"WHERE appointmentId = '{appointments.appointmentId}'";
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            cmd.ExecuteNonQuery();
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                //exception handling
+                MessageBox.Show($"Error occurred while updating appointment: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -155,13 +177,20 @@ namespace C969_Oliver
 
         public static bool ConfirmBusinessHours(Appointments appointments)
         {
-            DateTime businessStart = DateTime.Today.AddHours(8);
-            DateTime businessEnd = DateTime.Today.AddHours(18);
+            // Convert appointment start and end times to EST
+            TimeZoneInfo estTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
-            DateTime appointmentStart = DateTime.Parse(appointments.start.ToString());
-            DateTime appointmentEnd = DateTime.Parse(appointments.end.ToString());
+            // Specify the time zone for the input DateTime objects 
+            DateTimeOffset appointmentStartOffset = new DateTimeOffset(appointments.start, TimeZoneInfo.Local.GetUtcOffset(appointments.start));
+            DateTimeOffset appointmentEndOffset = new DateTimeOffset(appointments.end, TimeZoneInfo.Local.GetUtcOffset(appointments.end));
 
-            if (appointmentStart.TimeOfDay >= businessStart.TimeOfDay && appointmentStart.TimeOfDay <= businessEnd.TimeOfDay && appointmentEnd.TimeOfDay > businessStart.TimeOfDay && appointmentEnd.TimeOfDay <= businessEnd.TimeOfDay)
+            // Convert the input DateTime objects to EST
+            DateTimeOffset appointmentStartEst = TimeZoneInfo.ConvertTime(appointmentStartOffset, estTimeZone);
+            DateTimeOffset appointmentEndEst = TimeZoneInfo.ConvertTime(appointmentEndOffset, estTimeZone);
+
+            // Check if appointment falls within business hours 
+            if (appointmentStartEst.DayOfWeek >= DayOfWeek.Monday && appointmentStartEst.DayOfWeek <= DayOfWeek.Friday &&
+                appointmentStartEst.TimeOfDay >= new TimeSpan(9, 0, 0) && appointmentEndEst.TimeOfDay <= new TimeSpan(17, 0, 0))
             {
                 return true;
             }

@@ -29,6 +29,7 @@ namespace C969_Oliver
             textCountryModCust.Text = country;
             textZipModCust.Text = zipCode;
             textPhoneModCust.Text = phone;
+            textPhoneModCust.KeyPress += textPhoneAddCust_KeyPress;
         }
         //confirm no blank fields
         private bool confirmFields()
@@ -100,6 +101,15 @@ namespace C969_Oliver
 
             // Close the modify customer form
             this.Close();
+        }
+        private void textPhoneAddCust_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow digits (0-9), backspace, and dashes (-)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != '-')
+            {
+                e.Handled = true; // Ignore the character
+                MessageBox.Show("Only digits and dashes are allowed in the phone number.");
+            }
         }
         //close
         private void btnCloseModCust_Click(object sender, EventArgs e)
