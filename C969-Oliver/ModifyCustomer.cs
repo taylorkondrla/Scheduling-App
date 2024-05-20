@@ -21,6 +21,7 @@ namespace C969_Oliver
             InitializeComponent();
 
             textCustIDModCust.Text = customerId.ToString();
+            textCustIDModCust.ReadOnly = true;
             textCustNameModCust.Text = customerName;
             textAddressModCust.Text = address;
             textBaddress2ModCust.Text = address2;
@@ -82,6 +83,12 @@ namespace C969_Oliver
             Country country = Country.GetCountry(textCountryModCust.Text);
             City city = City.GetCity(textCityModCust.Text, country.CountryId);
             Address address = Address.GetAddress(textAddressModCust.Text, textBaddress2ModCust.Text, city.cityId, textZipModCust.Text, textPhoneModCust.Text);
+
+            if (address == null)
+            {
+                MessageBox.Show("An error occurred while processing the address data.");
+                return;
+            }
 
             // Update the customer
             int customerId = Convert.ToInt32(textCustIDModCust.Text);

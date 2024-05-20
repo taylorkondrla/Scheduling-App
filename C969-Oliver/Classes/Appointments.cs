@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
@@ -10,6 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace C969_Oliver
 {
@@ -23,7 +25,7 @@ namespace C969_Oliver
         public string description { get; set; }
         public string location { get; set; }
         public string type { get; set; }
-        public string contact { get; set; } 
+        public string contact { get; set; }
         public string url { get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
@@ -103,26 +105,7 @@ namespace C969_Oliver
         //create appointment
         public static void CreateAppointment(Appointments appointments)
         {
-            // Check if the appointments object is null
-            if (appointments == null)
-            {
-                throw new ArgumentNullException(nameof(appointments), "The appointments object is null.");
-            }
-
-            // Check if any required properties are null
-            if (appointments.userId <= 0 || appointments.customerId <= 0)
-            {
-                throw new ArgumentException("User ID and Customer ID must be greater than 0.");
-            }
-
-            // Check if start and end dates are valid
-            if (appointments.start == default || appointments.end == default || appointments.start >= appointments.end)
-            {
-                throw new ArgumentException("Invalid start or end date.");
-            }
-
-            // Construct the SQL query
-            string qry = $"INSERT INTO appointment (appointmentId, userId, customerId, title, description, location, type, contact, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+            string qry = $"INSERT INTO appointment " +
                 $"VALUES ('{appointments.appointmentId}', '{appointments.userId}', '{appointments.customerId}', '{appointments.title}', '{appointments.description}', '{appointments.location}', '{appointments.type}', '{appointments.contact}', '{appointments.url}', '{appointments.start.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{appointments.end.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser?.userName ?? "Unknown"}')";
 
 
@@ -130,7 +113,7 @@ namespace C969_Oliver
             cmd.ExecuteNonQuery();
         }
 
-        //Method to Delete Appointment
+        //delete Appointment
 
         public static bool DeleteAppointment(int appointmentId)
         {
@@ -139,7 +122,7 @@ namespace C969_Oliver
             MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
             int rowsAffected = cmd.ExecuteNonQuery();
 
-            // Check if any rows were affected (i.e., if the deletion was successful)
+            
             return rowsAffected > 0;
         }
 
@@ -211,17 +194,17 @@ namespace C969_Oliver
             // Create a new DataTable to store appointments
             DataTable appointmentsData = new DataTable();
 
-            // Get the current date and the start of the current week (Sunday)
+            
             DateTime currentDate = DateTime.Today;
             DateTime startOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek);
 
-            // Construct SQL query to select appointments for the current week
+            
             string qry = "SELECT appointmentId, customerId, userId, title, description, location, contact, type, date, start, end " +
                          "FROM appointment " +
                          $"WHERE start >= '{startOfWeek:yyyy-MM-dd}' " +
                          $"AND start < '{startOfWeek.AddDays(7):yyyy-MM-dd}'";
 
-            // Execute the query and fill the DataTable
+            
             using (MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
@@ -237,23 +220,23 @@ namespace C969_Oliver
                 row["end"] = ((DateTime)row["end"]).ToLocalTime();
             }
 
-            // Return the DataTable containing appointments for the current week
+            
             return appointmentsData;
         }
 
         //get monthly appointments
         public static DataTable MonthlyAppointments()
         {
-            // Create a new DataTable to store appointments
+            
             DataTable appointmentsData = new DataTable();
 
-            // Construct SQL query to select appointments for the current month
+            
             string qry = "SELECT appointmentId, customerId, userId, title, description, location, contact, type, date, start, end " +
                          "FROM appointment " +
-                         $"WHERE start >= '{DateTime.Now:yyyy-MM-01}' " + // Start of current month
-                         $"AND start < '{DateTime.Now.AddMonths(1):yyyy-MM-01}'"; // Start of next month
+                         $"WHERE start >= '{DateTime.Now:yyyy-MM-01}' " + 
+                         $"AND start < '{DateTime.Now.AddMonths(1):yyyy-MM-01}'"; 
 
-            // Execute the query and fill the DataTable
+            
             using (MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
@@ -269,7 +252,7 @@ namespace C969_Oliver
                 row["end"] = ((DateTime)row["end"]).ToLocalTime();
             }
 
-            // Return the DataTable containing appointments for the current month
+            
             return appointmentsData;
         }
         // Get distinct user IDs from the appointments table
@@ -277,15 +260,15 @@ namespace C969_Oliver
         {
             List<int> userIds = new List<int>();
 
-            // Construct SQL query to select distinct user IDs
+            
             string query = "SELECT DISTINCT userId FROM appointment";
 
-            // Execute the query
+            
             using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
             {
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    // Read user IDs from the result set
+                    
                     while (reader.Read())
                     {
                         int userId = reader.GetInt32("userId");
@@ -297,20 +280,20 @@ namespace C969_Oliver
             return userIds;
         }
 
-        // Get distinct customer IDs from the appointments table
+        // Get distinct customer IDs from the customer table
         public static List<int> GetDistinctCustomerIds()
         {
             List<int> customerIds = new List<int>();
 
-            // Construct SQL query to select distinct customer IDs
+            
             string query = "SELECT DISTINCT customerId FROM customer";
 
-            // Execute the query
+            
             using (MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection))
             {
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    // Read customer IDs from the result set
+                    
                     while (reader.Read())
                     {
                         int customerId = reader.GetInt32("customerId");

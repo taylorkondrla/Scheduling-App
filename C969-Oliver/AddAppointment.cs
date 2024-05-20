@@ -12,7 +12,7 @@ namespace C969_Oliver
 {
     public partial class AddAppointment : Form
     {
-        // Create instance of mainform that will refresh datagrid
+        //create instance of mainform that will refresh datagrid
         MainForm mainForm = (MainForm)Application.OpenForms["MainForm"];
 
         public AddAppointment()
@@ -30,26 +30,26 @@ namespace C969_Oliver
         // Method to populate the user combo box
         private void PopulateUserComboBox()
         {
-            // Clear existing items
+            
             comboBoxUser.Items.Clear();
 
-            // Get distinct user IDs from appointments table
+            
             List<int> userIds = Appointments.GetDistinctUserIds();
 
-            // Add user IDs to combo box
+            // Lambda expression to add each user ID to the combo box for clarity, readability and conciseness
             userIds.ForEach(userId => comboBoxUser.Items.Add(userId));
         }
 
         // Method to populate the customer combo box
         private void PopulateCustomerComboBox()
         {
-            // Clear existing items
+            
             comboBoxCustomer.Items.Clear();
 
-            // Get distinct customer IDs from appointments table
+            
             List<int> customerIds = Appointments.GetDistinctCustomerIds();
 
-            // Add customer IDs to combo box
+            // Lambda expression to add each customer ID to the combo box for clarity, readability and conciseness
             customerIds.ForEach(customerId => comboBoxCustomer.Items.Add(customerId));
         }
 
@@ -97,6 +97,13 @@ namespace C969_Oliver
             }
             return false;
         }
+        //combine date and time
+        public DateTime CombineDateAndTime(DateTimePicker datePicker, DateTimePicker timePicker)
+        {
+            DateTime date = datePicker.Value.Date;
+            DateTime time = timePicker.Value;
+            return date.Add(time.TimeOfDay);
+        }
 
         // Save new appointment
         private void btnSaveAddAppt_Click(object sender, EventArgs e)
@@ -109,9 +116,20 @@ namespace C969_Oliver
                     return;
                 }
 
-                // Retrieve user ID and customer ID from combo boxes
+                
                 int userId = Convert.ToInt32(comboBoxUser.SelectedItem);
                 int customerId = Convert.ToInt32(comboBoxCustomer.SelectedItem);
+
+                
+                DateTime startDateTime = CombineDateAndTime(dateAddAppt, startTimeAddAppt);
+                DateTime endDateTime = CombineDateAndTime(dateAddAppt, endTimeAddAppt);
+
+                
+                if (endDateTime <= startDateTime)
+                {
+                    MessageBox.Show("End time must be after start time.", "Invalid Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 Appointments newAppointment = new Appointments(
                     Convert.ToInt32(textApptIDAddAppt.Text),
@@ -123,8 +141,8 @@ namespace C969_Oliver
                     textTypeAddAppt.Text,
                     textContactAddAppt.Text,
                     textURLAddAppt.Text,
-                    startTimeAddAppt.Value,
-                    endTimeAddAppt.Value
+                    startDateTime,
+                    endDateTime
                 );
 
                 try
@@ -136,7 +154,7 @@ namespace C969_Oliver
 
                     if (!Appointments.ConfirmNoConflict(newAppointment))
                     {
-                        throw new Exception("Oops! Appointment times conflict another appointment for this user.");
+                        throw new Exception("Oops! Appointment times conflict with another appointment for this user.");
                     }
 
                     Appointments.CreateAppointment(newAppointment);
@@ -161,5 +179,4 @@ namespace C969_Oliver
             Close();
         }
     }
-    
 }

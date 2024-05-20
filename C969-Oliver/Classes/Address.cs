@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace C969_Oliver
 {
-   class Address
-   {
-        //attributes
+    class Address
+    {
+        // Attributes
         public int addressID { get; set; }
         public string address { get; set; }
         public string address2 { get; set; }
@@ -21,8 +21,7 @@ namespace C969_Oliver
         public string postalCode { get; set; }
         public string phone { get; set; }
 
-
-        //constructors
+        // Constructors
         public Address() { }
 
         public Address(int addressID, string address, string address2, int cityId, string postalCode, string phone)
@@ -34,14 +33,14 @@ namespace C969_Oliver
             this.postalCode = postalCode;
             this.phone = phone;
         }
-        //method get data from address table
+
+        // Method to get data from address table
         public static int NewAddressId()
         {
             int newAddressID = 0;
 
             try
             {
-                // Ensure the database connection is open
                 using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
                 {
                     connection.Open();
@@ -62,14 +61,13 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately (log, display error message, etc.)
                 MessageBox.Show("An error occurred while fetching the new address ID: " + ex.Message);
             }
 
             return newAddressID;
         }
 
-        //get address
+        // Get address
         public static Address GetAddress(string address, string address2, int cityId, string postalCode, string phone)
         {
             Address getAddress = new Address();
@@ -80,16 +78,22 @@ namespace C969_Oliver
                 {
                     connection.Open();
 
-                    string query = $"SELECT addressId, address, cityId, postalCode, phone " +
+                    string query = $"SELECT addressId, address, address2, cityId, postalCode, phone " +
                                    $"FROM address " +
-                                   $"WHERE address = '{address}' " +
-                                   $"and address2 = '{address2}' " +
-                                   $"and cityId = '{cityId}' " +
-                                   $"and postalCode = '{postalCode}' " +
-                                   $"and phone = '{phone}' ";
+                                   $"WHERE address = @address " +
+                                   $"AND address2 = @address2 " +
+                                   $"AND cityId = @cityId " +
+                                   $"AND postalCode = @postalCode " +
+                                   $"AND phone = @phone";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@address", address);
+                        cmd.Parameters.AddWithValue("@address2", address2);
+                        cmd.Parameters.AddWithValue("@cityId", cityId);
+                        cmd.Parameters.AddWithValue("@postalCode", postalCode);
+                        cmd.Parameters.AddWithValue("@phone", phone);
+
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -119,15 +123,13 @@ namespace C969_Oliver
             }
 
             return getAddress;
-
         }
 
-        //create a new address
+        // Create a new address
         public static Address CreateNewAddress(string address, string address2, int cityId, string postalCode, string phone)
         {
             try
             {
-                // Ensure the database connection is open
                 using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
                 {
                     connection.Open();
@@ -135,10 +137,22 @@ namespace C969_Oliver
                     Address newAddress = new Address(NewAddressId(), address, address2, cityId, postalCode, phone);
 
                     string qry = "INSERT INTO address " +
-                        $"VALUES ('{newAddress.addressID}', '{newAddress.address}', '{newAddress.address2}', '{newAddress.cityId}', '{newAddress.postalCode}', '{newAddress.phone}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}', '{DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")}', '{LogIn.currentUser.userName}')";
+                        $"(addressId, address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+                        $"VALUES (@addressID, @address, @address2, @cityId, @postalCode, @phone, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)";
 
                     using (MySqlCommand cmd = new MySqlCommand(qry, connection))
                     {
+                        cmd.Parameters.AddWithValue("@addressID", newAddress.addressID);
+                        cmd.Parameters.AddWithValue("@address", newAddress.address);
+                        cmd.Parameters.AddWithValue("@address2", newAddress.address2);
+                        cmd.Parameters.AddWithValue("@cityId", newAddress.cityId);
+                        cmd.Parameters.AddWithValue("@postalCode", newAddress.postalCode);
+                        cmd.Parameters.AddWithValue("@phone", newAddress.phone);
+                        cmd.Parameters.AddWithValue("@createDate", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@createdBy", LogIn.currentUser.userName);
+                        cmd.Parameters.AddWithValue("@lastUpdate", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", LogIn.currentUser.userName);
+
                         cmd.ExecuteNonQuery();
                     }
 
@@ -147,7 +161,6 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately (log, display error message, etc.)
                 MessageBox.Show("An error occurred while creating a new address: " + ex.Message);
                 return null;
             }

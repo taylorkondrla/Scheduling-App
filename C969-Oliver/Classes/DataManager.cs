@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace C969_Oliver
 {
@@ -21,11 +22,11 @@ namespace C969_Oliver
         {
             DataTable dataTable = new DataTable();
             string query = @"
-                SELECT c.CustomerID, COUNT(a.AppointmentID) AS AppointmentCount
-                FROM Customer c
-                LEFT JOIN Appointment a ON c.CustomerID = a.CustomerID
-                WHERE MONTH(a.start) = @Month
-                GROUP BY c.CustomerID";
+            SELECT c.customerId, COUNT(a.appointmentId) AS AppointmentCount
+            FROM customer c
+            LEFT JOIN appointment a ON c.customerId = a.customerId
+            WHERE MONTH(a.start) = @Month
+            GROUP BY c.customerId";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -66,18 +67,23 @@ namespace C969_Oliver
         public static DataTable GetWeeklyAppointments()
         {
             DataTable dataTable = new DataTable();
-            string query = @"
-        SELECT * 
-        FROM Appointment 
-        WHERE WEEK(createDate) = WEEK(CURDATE()) 
-        ORDER BY createDate"; // Changed "Date" to "createDate"
+            string qry = @"
+        SELECT appointmentId, customerId, userId, title, description, location, contact, type, url, start, end 
+        FROM appointment 
+        WHERE start >= @StartDate AND start <= @EndDate";
+
+            DateTime startDate = DateTime.Today;
+            DateTime endDate = startDate.AddDays(7);
 
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(qry, connection))
                     {
+                        command.Parameters.AddWithValue("@StartDate", startDate);
+                        command.Parameters.AddWithValue("@EndDate", endDate);
+
                         connection.Open();
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
@@ -97,17 +103,16 @@ namespace C969_Oliver
         public static DataTable GetMonthlyAppointments()
         {
             DataTable dataTable = new DataTable();
-            string query = @"
-        SELECT * 
-        FROM Appointment 
-        WHERE MONTH(createDate) = MONTH(CURDATE()) 
-        ORDER BY createDate"; // Changed "Date" to "createDate"
+            string qry = @"
+        SELECT appointmentId, customerId, userId, title, description, location, contact, type, url, start, end 
+        FROM appointment 
+        WHERE MONTH(start) = MONTH(CURDATE()) AND YEAR(start) = YEAR(CURDATE())";
 
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(qry, connection))
                     {
                         connection.Open();
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
@@ -128,7 +133,7 @@ namespace C969_Oliver
         public static DataTable GetAppointmentTypesForMonth(string month)
         {
             DataTable dataTable = new DataTable();
-            string query = "SELECT Type, COUNT(*) AS Count FROM Appointment WHERE MONTH(createDate) = @Month GROUP BY Type";
+            string query = "SELECT Type, COUNT(*) AS Count FROM Appointment WHERE MONTH(start) = @Month GROUP BY Type";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -213,6 +218,8 @@ namespace C969_Oliver
 
             return dataTable;
         }
+
+       
     }
 }
 

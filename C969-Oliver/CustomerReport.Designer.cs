@@ -65,6 +65,7 @@
             this.rdbtnJanCR.Size = new System.Drawing.Size(74, 23);
             this.rdbtnJanCR.TabIndex = 1;
             this.rdbtnJanCR.TabStop = true;
+            this.rdbtnJanCR.Tag = "January";
             this.rdbtnJanCR.Text = "January";
             this.rdbtnJanCR.UseVisualStyleBackColor = true;
             // 
@@ -77,6 +78,7 @@
             this.rdbtnFebCR.Size = new System.Drawing.Size(81, 23);
             this.rdbtnFebCR.TabIndex = 2;
             this.rdbtnFebCR.TabStop = true;
+            this.rdbtnFebCR.Tag = "February";
             this.rdbtnFebCR.Text = "February";
             this.rdbtnFebCR.UseVisualStyleBackColor = true;
             // 
@@ -89,6 +91,7 @@
             this.rdbtnMarCR.Size = new System.Drawing.Size(67, 23);
             this.rdbtnMarCR.TabIndex = 3;
             this.rdbtnMarCR.TabStop = true;
+            this.rdbtnMarCR.Tag = "March";
             this.rdbtnMarCR.Text = "March";
             this.rdbtnMarCR.UseVisualStyleBackColor = true;
             // 
@@ -101,6 +104,7 @@
             this.rdbtnAprCR.Size = new System.Drawing.Size(55, 23);
             this.rdbtnAprCR.TabIndex = 4;
             this.rdbtnAprCR.TabStop = true;
+            this.rdbtnAprCR.Tag = "April";
             this.rdbtnAprCR.Text = "April";
             this.rdbtnAprCR.UseVisualStyleBackColor = true;
             // 
@@ -113,6 +117,7 @@
             this.rdbtnMayCR.Size = new System.Drawing.Size(54, 23);
             this.rdbtnMayCR.TabIndex = 5;
             this.rdbtnMayCR.TabStop = true;
+            this.rdbtnMayCR.Tag = "May";
             this.rdbtnMayCR.Text = "May";
             this.rdbtnMayCR.UseVisualStyleBackColor = true;
             // 
@@ -125,6 +130,7 @@
             this.rdbtnJunCR.Size = new System.Drawing.Size(55, 23);
             this.rdbtnJunCR.TabIndex = 6;
             this.rdbtnJunCR.TabStop = true;
+            this.rdbtnJunCR.Tag = "June";
             this.rdbtnJunCR.Text = "June";
             this.rdbtnJunCR.UseVisualStyleBackColor = true;
             // 
@@ -137,6 +143,7 @@
             this.rdbtnJulCR.Size = new System.Drawing.Size(50, 23);
             this.rdbtnJulCR.TabIndex = 7;
             this.rdbtnJulCR.TabStop = true;
+            this.rdbtnJulCR.Tag = "July";
             this.rdbtnJulCR.Text = "July";
             this.rdbtnJulCR.UseVisualStyleBackColor = true;
             // 
@@ -149,6 +156,7 @@
             this.rdbtnAugCR.Size = new System.Drawing.Size(71, 23);
             this.rdbtnAugCR.TabIndex = 8;
             this.rdbtnAugCR.TabStop = true;
+            this.rdbtnAugCR.Tag = "August";
             this.rdbtnAugCR.Text = "August";
             this.rdbtnAugCR.UseVisualStyleBackColor = true;
             // 
@@ -161,6 +169,7 @@
             this.rdbtnSepCR.Size = new System.Drawing.Size(94, 23);
             this.rdbtnSepCR.TabIndex = 9;
             this.rdbtnSepCR.TabStop = true;
+            this.rdbtnSepCR.Tag = "September";
             this.rdbtnSepCR.Text = "September";
             this.rdbtnSepCR.UseVisualStyleBackColor = true;
             // 
@@ -173,6 +182,7 @@
             this.rdbtnOctCR.Size = new System.Drawing.Size(78, 23);
             this.rdbtnOctCR.TabIndex = 10;
             this.rdbtnOctCR.TabStop = true;
+            this.rdbtnOctCR.Tag = "October";
             this.rdbtnOctCR.Text = "October";
             this.rdbtnOctCR.UseVisualStyleBackColor = true;
             // 
@@ -185,6 +195,7 @@
             this.rdbtnNovCR.Size = new System.Drawing.Size(92, 23);
             this.rdbtnNovCR.TabIndex = 11;
             this.rdbtnNovCR.TabStop = true;
+            this.rdbtnNovCR.Tag = "November";
             this.rdbtnNovCR.Text = "November";
             this.rdbtnNovCR.UseVisualStyleBackColor = true;
             // 
@@ -197,6 +208,7 @@
             this.rdbtnDecCR.Size = new System.Drawing.Size(90, 23);
             this.rdbtnDecCR.TabIndex = 12;
             this.rdbtnDecCR.TabStop = true;
+            this.rdbtnDecCR.Tag = "December";
             this.rdbtnDecCR.Text = "December";
             this.rdbtnDecCR.UseVisualStyleBackColor = true;
             // 

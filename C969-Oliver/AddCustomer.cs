@@ -20,6 +20,7 @@ namespace C969_Oliver
         {
             InitializeComponent();
             textCustomerIDAddCust.Text = Customer.GetNewCustomerID().ToString();
+            textCustomerIDAddCust.ReadOnly = true;
         }
 
         // Confirm all fields are not blank
@@ -79,7 +80,7 @@ namespace C969_Oliver
                         city = City.CreateNewCity(textCityAddCust.Text, country.CountryId);
                     }
 
-                    // Now, city should not be null
+                    //city should not be null
                     if (city != null)
                     {
                         Address address = Address.CreateNewAddress(textAddressAddCust.Text, textAddress2AddCust.Text, city.cityId, textZipAddCust.Text, textPhoneAddCust.Text);
@@ -89,7 +90,7 @@ namespace C969_Oliver
                     }
                     else
                     {
-                        // Handle case where city creation failed
+                        //case where city creation failed
                         MessageBox.Show("Failed to create the city.");
                     }
                 }

@@ -65,7 +65,7 @@ namespace C969_Oliver
         //opens modify appointment form
         private void btnModifyAppt_Click(object sender, EventArgs e)
         {
-            // Check if there's a selected row
+            
             if (mainApptDataGrid.SelectedRows.Count > 0)
             {
                 DataGridViewRow selectedRow = mainApptDataGrid.SelectedRows[0];
@@ -102,12 +102,12 @@ namespace C969_Oliver
         //opens modify customer form
         private void btnModifyCustomer_Click(object sender, EventArgs e)
         {
-            // Check if there's a selected row
+            
             if (mainCustomersDataGrid.SelectedRows.Count > 0)
             {
                 DataGridViewRow selectedRow = mainCustomersDataGrid.SelectedRows[0];
 
-                // Retrieve cell values directly and convert them to appropriate types
+                
                 int customerId = Convert.ToInt32(selectedRow.Cells["customerId"].Value);
                 string customerName = selectedRow.Cells["customerName"].Value.ToString();
                 string address = selectedRow.Cells["address"].Value.ToString();
@@ -182,7 +182,7 @@ namespace C969_Oliver
                 MessageBox.Show("Failed to delete appointment.");
             }
         }
-
+        //delete customer
         private void btnDeleteCustomer_Click(object sender, EventArgs e)
         {
             // Check if a row is selected in the DataGridView

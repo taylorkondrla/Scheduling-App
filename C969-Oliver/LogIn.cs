@@ -21,10 +21,11 @@ namespace C969_Oliver
         public LogIn(MainForm mainForm)
         {
             InitializeComponent();
-            this.mainForm = mainForm; // Store reference to MainForm
-                                      // Your existing initialization code
+            this.mainForm = mainForm; 
+                                      
         }
-        private static DataManager dataManager = new DataManager(); // Create an instance of DataManager
+        //create instance of datamanger 
+        private static DataManager dataManager = new DataManager();
         public static User currentUser;
         public string message = "The username and password did not match.";
 
@@ -52,7 +53,7 @@ namespace C969_Oliver
         {
             try
             {
-                // Ensure the database connection is opened before querying
+                //the database connection is opened before querying
                 DBConnection.OpenConnection();
 
                 using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["localdb"].ConnectionString))
@@ -76,12 +77,12 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle exceptions appropriately (e.g., log or display error message)
+               
                 MessageBox.Show("An error occurred while trying to find the user: " + ex.Message);
             }
             finally
             {
-                // Always ensure the connection is properly closed after use
+                
                 DBConnection.CloseConnection();
             }
 
@@ -99,7 +100,7 @@ namespace C969_Oliver
                 mainForm.Show();
 
                 // Trigger appointment reminder in the MainForm
-                mainForm.AppointmentReminder(); // No need to pass any arguments
+                mainForm.AppointmentReminder(); 
             }
             else
             {

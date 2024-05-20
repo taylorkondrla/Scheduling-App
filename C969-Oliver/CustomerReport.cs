@@ -16,10 +16,10 @@ namespace C969_Oliver
         public CustomerReport()
         {
             InitializeComponent();
-            LoadEventHandlers(); // Load event handlers for radio buttons
+            LoadMonths();
         }
 
-        private void LoadEventHandlers()
+        private void LoadMonths()
         {
             // Add event handlers for radio buttons
             rdbtnJanCR.CheckedChanged += RadioButton_CheckedChanged;
@@ -39,10 +39,9 @@ namespace C969_Oliver
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
-            if (radioButton.Checked && radioButton.Text.Length >= 7) // Check if text has at least 7 characters
+            if (radioButton.Checked)
             {
-                string month = radioButton.Text.Substring(6);
-                // Populate the data grid with customer report data for the selected month
+                string month = radioButton.Tag.ToString(); // Use Tag property to store month name
                 PopulateCustomerReportDataGrid(month);
             }
         }
@@ -52,6 +51,7 @@ namespace C969_Oliver
             DataTable dataTable = DataManager.GetCustomerReportDataForMonth(month);
             customerReportDataGrid.DataSource = dataTable;
         }
+
 
         private void btnCloseCustomerReport_Click(object sender, EventArgs e)
         {

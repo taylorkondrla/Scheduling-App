@@ -38,7 +38,6 @@ namespace C969_Oliver
         // Constructor
         public Customer() { }
 
-        // Methods
 
         //get a new customer ID
         public static int GetNewCustomerID()
@@ -68,7 +67,7 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately (log, display error message, etc.)
+                
                 MessageBox.Show("An error occurred while fetching a new customer ID: " + ex.Message);
             }
 
@@ -78,15 +77,30 @@ namespace C969_Oliver
         //Add new customer
         public static void AddCustomer(string customerName, int addressId, int active)
         {
-            int newCustomerId = GetNewCustomerID();
-            string timestamp = DataManager.createTimeStamp();
-            string uname = User.GetUserByName(customerName).userName; // Pass customerName to GetUserByName()
+            try
+            {
+                // Open the database connection
+                DBConnection.OpenConnection();
 
-            string qry = $"INSERT INTO customer " +
-                         $"VALUES ('{newCustomerId}', '{customerName}', '{addressId}', '{active}', '{timestamp}', '{uname}', '{timestamp}', '{uname}')";
+                int newCustomerId = GetNewCustomerID();
+                string timestamp = DataManager.createTimeStamp();
+                string uname = User.GetUserByName(customerName).userName; 
 
-            MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-            cmd.ExecuteNonQuery();
+                string qry = $"INSERT INTO customer " +
+                             $"VALUES ('{newCustomerId}', '{customerName}', '{addressId}', '{active}', '{timestamp}', '{uname}', '{timestamp}', '{uname}')";
+
+                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while adding a new customer: {ex.Message}");
+            }
+            finally
+            {
+                // Close the database connection
+                DBConnection.CloseConnection();
+            }
         }
 
         //Get customer by name
@@ -144,7 +158,6 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle the exception 
                 MessageBox.Show("An error occurred while fetching customer data: " + ex.Message);
             }
 
@@ -179,7 +192,7 @@ namespace C969_Oliver
 
             try
             {
-                // Ensure the database connection is opened before executing the query
+               
                 DBConnection.OpenConnection();
 
                 string qry = $"SELECT customerId FROM customer WHERE customerName = '{customerName}'";
@@ -197,12 +210,10 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle exceptions appropriately (e.g., log or display error message)
                 MessageBox.Show("An error occurred while confirming customer existence: " + ex.Message);
             }
             finally
             {
-                // Always ensure the connection is properly closed after use
                 DBConnection.CloseConnection();
             }
 
@@ -239,7 +250,6 @@ namespace C969_Oliver
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately (log, display error message, etc.)
                 MessageBox.Show("An error occurred while modifying customer: " + ex.Message);
             }
         }
@@ -249,13 +259,21 @@ namespace C969_Oliver
         {
             try
             {
-                string qry = $"DELETE FROM appointment WHERE customerId = '{customerId}'";
-                MySqlCommand cmd = new MySqlCommand(qry, DBConnection.Connection);
-                cmd.ExecuteNonQuery();
+                // Open the database connection
+                DBConnection.OpenConnection();
 
-                qry = $"DELETE FROM customer WHERE customerId = '{customerId}'";
-                cmd = new MySqlCommand(qry, DBConnection.Connection);
-                cmd.ExecuteNonQuery();
+                // Delete appointments associated with the customer
+                string appointmentQuery = $"DELETE FROM appointment WHERE customerId = '{customerId}'";
+                MySqlCommand appointmentCmd = new MySqlCommand(appointmentQuery, DBConnection.Connection);
+                appointmentCmd.ExecuteNonQuery();
+
+                // Delete the customer
+                string customerQuery = $"DELETE FROM customer WHERE customerId = '{customerId}'";
+                MySqlCommand customerCmd = new MySqlCommand(customerQuery, DBConnection.Connection);
+                customerCmd.ExecuteNonQuery();
+
+                // Close the database connection
+                DBConnection.CloseConnection();
 
                 return true; // Deletion successful
             }
@@ -263,6 +281,11 @@ namespace C969_Oliver
             {
                 MessageBox.Show($"Failed to delete customer: {ex.Message}");
                 return false; // Deletion failed
+            }
+            finally
+            {
+                // Make sure to close the connection in case of an exception
+                DBConnection.CloseConnection();
             }
         }
 

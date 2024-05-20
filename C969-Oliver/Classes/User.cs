@@ -54,24 +54,24 @@ namespace C969_Oliver
         {
             List<User> userList = new List<User>();
 
-            string query = "SELECT * FROM user;";
+            string query = "SELECT userId, userName FROM user;";
             MySqlCommand cmd = new MySqlCommand(query, DBConnection.Connection);
             MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read()) 
+            while (reader.Read())
             {
-                User user = new User();
-
-                user.userId = Convert.ToInt32(reader["userId"]);
-                user.userName = reader["username"].ToString();
-                user.password = reader["password"].ToString();
-                user.active = Convert.ToInt32(reader["active"]);
+                User user = new User
+                {
+                    userId = Convert.ToInt32(reader["userId"]),
+                    userName = reader["userName"].ToString()
+                };
 
                 userList.Add(user);
             }
             reader.Close();
             return userList;
         }
+
         //get user by id
         public static User GetUserByID(int userId)
         {

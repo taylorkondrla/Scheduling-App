@@ -77,32 +77,51 @@ namespace C969_Oliver
             return false;
         }
 
+        //combine date and time
+        private DateTime CombineDateAndTime(DateTimePicker datePicker, DateTimePicker timePicker)
+        {
+            DateTime date = datePicker.Value.Date;
+            DateTime time = timePicker.Value;
+            return date.Add(time.TimeOfDay);
+        }
+
+        //save
         private void btnSaveModAppt_Click(object sender, EventArgs e)
         {
             try
             {
                 if (confirmFields())
                 {
-                    // Fields are not valid, do nothing
                     return;
                 }
 
-                // Directly use the customerId and userId passed to the constructor
-                Customer customer = Customer.GetCustomerById(int.Parse(textCustomerIDModAppt.Text));
-                User user = User.GetUserByID(int.Parse(textUserIDModAppt.Text));
+                // Retrieve user ID and customer ID
+                int userId = Convert.ToInt32(textUserIDModAppt.Text);
+                int customerId = Convert.ToInt32(textCustomerIDModAppt.Text);
+
+                // Combine the date and time from the DateTimePicker controls
+                DateTime startDateTime = CombineDateAndTime(dateModAppt, startTimeModAppt);
+                DateTime endDateTime = CombineDateAndTime(dateModAppt, endTimeModAppt);
+
+                // Validate the date and time
+                if (endDateTime <= startDateTime)
+                {
+                    MessageBox.Show("End time must be after start time.", "Invalid Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 Appointments newAppointment = new Appointments(
                     Convert.ToInt32(textApptIDModAppt.Text),
-                    customer.customerId,
-                    user.userId,
+                    customerId,
+                    userId,
                     textTitleModAppt.Text,
                     textDescriptionModAppt.Text,
                     textLocationModAppt.Text,
                     textTypeModAppt.Text,
                     textContactModAppt.Text,
                     textURLModAppt.Text,
-                    startTimeModAppt.Value,
-                    endTimeModAppt.Value
+                    startDateTime,
+                    endDateTime
                 );
 
                 try
@@ -114,7 +133,7 @@ namespace C969_Oliver
 
                     if (!Appointments.ConfirmNoConflict(newAppointment))
                     {
-                        throw new Exception("Oops! Appointment times conflict another appointment for this user.");
+                        throw new Exception("Oops! Appointment times conflict with another appointment for this user.");
                     }
 
                     Appointments.UpdateAppointment(newAppointment);
